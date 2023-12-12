@@ -12,9 +12,10 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
-/*global define, require, QUnit, localStorage, Backbone, _ */
+/* global Backbone, _ */
 
 define([
     "jquery",

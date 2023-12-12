@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2015-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.util;
@@ -33,7 +34,7 @@ import static org.mockito.Mockito.argThat;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import org.forgerock.http.Handler;
@@ -42,10 +43,8 @@ import org.forgerock.json.JsonPointer;
 import org.forgerock.json.JsonValue;
 import org.forgerock.openig.el.Bindings;
 import org.forgerock.openig.heap.Heap;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -71,7 +70,7 @@ public class JsonValuesTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -179,14 +178,14 @@ public class JsonValuesTest {
     public void getWithDeprecationReturnsNonDeprecatedValue() {
         JsonValue config = json(object(field("new", "value")));
         assertThat(getWithDeprecation(config, logger, "new", "old").asString()).isEqualTo("value");
-        verifyZeroInteractions(logger);
+        verifyNoInteractions(logger);
     }
 
     @Test
     public void getWithDeprecationReturnsNullValue() {
         JsonValue config = json(object(field("new", "value")));
         assertThat(getWithDeprecation(config, logger, "missing", "old").asString()).isNull();
-        verifyZeroInteractions(logger);
+        verifyNoInteractions(logger);
     }
 
     @Test
@@ -268,17 +267,12 @@ public class JsonValuesTest {
         assertThat(value.as(slashEnded()).asString()).isEqualTo("http://localhost:8090/openam/");
     }
 
-    private static Matcher<JsonValue> hasValue(final Object value) {
-        return new BaseMatcher<JsonValue>() {
-            @Override
-            public boolean matches(final Object item) {
-                JsonValue json = (JsonValue) item;
-                return value.equals(json.getObject());
-            }
+    private static ArgumentMatcher<JsonValue> hasValue(final Object value) {
+        return new ArgumentMatcher<JsonValue>() {
 
             @Override
-            public void describeTo(final Description description) {
-                description.appendText(value.toString());
+            public boolean matches(JsonValue argument) {
+                return value.equals(argument.getObject());
             }
         };
     }

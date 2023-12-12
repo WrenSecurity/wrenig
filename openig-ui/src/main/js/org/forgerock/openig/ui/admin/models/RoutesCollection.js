@@ -49,15 +49,15 @@ define([
                     processData: false,
                     data: $.param({ _queryFilter: true })
                 })
-                .then(
-                    () => {
-                        this.routesCache.currentRoutes = this;
-                        deferred.resolve(this);
-                    },
-                    () => {
-                        deferred.reject();
-                    }
-                );
+                    .then(
+                        () => {
+                            this.routesCache.currentRoutes = this;
+                            deferred.resolve(this);
+                        },
+                        () => {
+                            deferred.reject();
+                        }
+                    );
             }
 
             return deferred;

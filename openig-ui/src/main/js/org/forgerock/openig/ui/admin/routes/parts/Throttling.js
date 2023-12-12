@@ -118,29 +118,29 @@ define([
         const form = this.$el.find(`#${this.data.formId}`)[0];
         FormUtils.isFormValid(form)
             .done(
-            () => {
-                const formVal = form2js(form, ".", false, FormUtils.convertToJSTypes);
-                _.extend(this.data.throttFilter, formVal);
-                if (!this.getFilter()) {
-                    RoutesUtils.addFilterIntoModel(this.data.routeData, this.data.throttFilter);
-                }
-                this.data.routeData.setFilter(this.data.throttFilter, this.filterCondition);
-                this.data.routeData.save()
-                    .then(
-                        () => {
-                            const submit = this.$el.find(".js-save-btn");
-                            submit.attr("disabled", true);
-                            this.showNotification(this.NOTIFICATION_TYPE.SaveSuccess);
-                        },
-                        () => {
-                            this.showNotification(this.NOTIFICATION_TYPE.SaveFailed);
-                        }
-                    );
-            })
+                () => {
+                    const formVal = form2js(form, ".", false, FormUtils.convertToJSTypes);
+                    _.extend(this.data.throttFilter, formVal);
+                    if (!this.getFilter()) {
+                        RoutesUtils.addFilterIntoModel(this.data.routeData, this.data.throttFilter);
+                    }
+                    this.data.routeData.setFilter(this.data.throttFilter, this.filterCondition);
+                    this.data.routeData.save()
+                        .then(
+                            () => {
+                                const submit = this.$el.find(".js-save-btn");
+                                submit.attr("disabled", true);
+                                this.showNotification(this.NOTIFICATION_TYPE.SaveSuccess);
+                            },
+                            () => {
+                                this.showNotification(this.NOTIFICATION_TYPE.SaveFailed);
+                            }
+                        );
+                })
             .fail(
-            () => {
-                $(form).find("input").trigger("validate");
-            });
+                () => {
+                    $(form).find("input").trigger("validate");
+                });
     },
 
     enableThrottlingClick (event) {
@@ -167,11 +167,11 @@ define([
             const form = this.$el.find(`#${this.data.formId}`)[0];
             FormUtils.isFormValid(form)
                 .done(
-                () => {
-                    this.data.throttFilter.enabled = newState;
-                    this.data.routeData.setFilter(this.data.throttFilter, this.filterCondition);
-                    this.data.routeData.save();
-                });
+                    () => {
+                        this.data.throttFilter.enabled = newState;
+                        this.data.routeData.setFilter(this.data.throttFilter, this.filterCondition);
+                        this.data.routeData.save();
+                    });
         }
         this.setFormFooterVisibility(newState);
     },

@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.handler;
@@ -60,7 +61,7 @@ public class ClientHandlerTest {
     @BeforeMethod
     public void beforeMethod() throws Exception {
         server = new StubServer().run();
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @AfterMethod

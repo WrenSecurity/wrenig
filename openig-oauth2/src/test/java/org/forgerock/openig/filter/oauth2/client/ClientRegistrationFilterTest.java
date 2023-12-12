@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2015-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 package org.forgerock.openig.filter.oauth2.client;
 
@@ -27,17 +28,17 @@ import static org.forgerock.json.JsonValue.json;
 import static org.forgerock.json.JsonValue.object;
 import static org.forgerock.openig.filter.oauth2.client.ClientRegistration.CLIENT_REG_KEY;
 import static org.forgerock.openig.filter.oauth2.client.Issuer.ISSUER_KEY;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.testng.Assert.assertTrue;
 
 import java.net.URI;
-
+import java.util.LinkedHashMap;
 import org.forgerock.http.Handler;
 import org.forgerock.http.protocol.Request;
 import org.forgerock.http.protocol.Response;
@@ -47,6 +48,7 @@ import org.forgerock.services.context.RootContext;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -70,7 +72,7 @@ public class ClientRegistrationFilterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
         context = new AttributesContext(new RootContext());
         registrations = spy(new ClientRegistrationRepository());
     }
@@ -149,7 +151,10 @@ public class ClientRegistrationFilterTest {
         verify(handler).handle(eq(context), captor.capture());
         Request request = captor.getValue();
         assertThat(request.getMethod()).isEqualTo("POST");
-        assertThat(request.getEntity().toString()).containsSequence("redirect_uris", "contact", "scopes");
+        LinkedHashMap<?, ?> entity = (LinkedHashMap<?, ?>) request.getEntity().getJson();
+        assertTrue(entity.containsKey("redirect_uris"));
+        assertTrue(entity.containsKey("contact"));
+        assertTrue(entity.containsKey("scopes"));
     }
 
     @Test(expectedExceptions = RegistrationException.class)

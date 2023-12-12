@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 package org.forgerock.openig.filter;
 
@@ -24,14 +25,13 @@ import static org.forgerock.json.JsonValue.object;
 import static org.forgerock.openig.heap.Keys.CLIENT_HANDLER_HEAP_KEY;
 import static org.forgerock.openig.heap.Keys.TEMPORARY_STORAGE_HEAP_KEY;
 import static org.forgerock.util.Options.defaultOptions;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import org.forgerock.http.Handler;
 import org.forgerock.http.handler.HttpClientHandler;
-import org.forgerock.http.protocol.Request;
 import org.forgerock.http.protocol.Response;
 import org.forgerock.json.JsonValue;
 import org.forgerock.json.JsonValueException;
@@ -42,6 +42,7 @@ import org.forgerock.openig.heap.Name;
 import org.forgerock.services.context.Context;
 import org.forgerock.services.context.RootContext;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -59,7 +60,7 @@ public class ConditionEnforcementFilterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
         context = new RootContext();
     }
     @DataProvider
@@ -111,7 +112,7 @@ public class ConditionEnforcementFilterTest {
         final ConditionEnforcementFilter filter = new ConditionEnforcementFilter(Expression.valueOf("${true}",
                                                                                                     Boolean.class));
         filter.filter(context, null, next);
-        verify(next).handle(any(Context.class), any(Request.class));
+        verify(next).handle(any(Context.class), isNull());
     }
 
     @DataProvider
@@ -134,7 +135,7 @@ public class ConditionEnforcementFilterTest {
         // Then
         assertThat(response.getStatus()).isEqualTo(FORBIDDEN);
         assertThat(response.getCause()).isNull();
-        verifyZeroInteractions(next);
+        verifyNoInteractions(next);
     }
 
     @Test(dataProvider = "conditionsEvaluatingToFalse")
@@ -147,7 +148,7 @@ public class ConditionEnforcementFilterTest {
         // When
         filter.filter(context, null, next);
         // Then
-        verify(failureHandler).handle(any(Context.class), any(Request.class));
+        verify(failureHandler).handle(any(Context.class), isNull());
     }
 
     private HeapImpl buildDefaultHeap() throws Exception {

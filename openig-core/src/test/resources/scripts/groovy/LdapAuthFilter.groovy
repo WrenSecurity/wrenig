@@ -43,7 +43,7 @@ try {
             ldap.scope.sub,
             ldap.filter(filter, username, username, username))
 
-    client.bind(user.name as String, password?.toCharArray())
+    client.bind(user.name as String, password?.getChars())
 
     // Authentication succeeded.
 

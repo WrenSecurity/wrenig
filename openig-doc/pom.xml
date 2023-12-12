@@ -1,311 +1,322 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  The contents of this file are subject to the terms of the Common Development and
-  Distribution License (the License). You may not use this file except in compliance with the
-  License.
+    The contents of this file are subject to the terms of the Common Development and
+    Distribution License (the License). You may not use this file except in compliance with the
+    License.
 
-  You can obtain a copy of the License at legal/CDDLv1.0.txt. See the License for the
-  specific language governing permission and limitations under the License.
+    You can obtain a copy of the License at legal/CDDLv1.0.txt. See the License for the
+    specific language governing permission and limitations under the License.
 
-  When distributing Covered Software, include this CDDL Header Notice in each file and include
-  the License file at legal/CDDLv1.0.txt. If applicable, add the following below the CDDL
-  Header, with the fields enclosed by brackets [] replaced by your own identifying
-  information: "Portions Copyright [year] [name of copyright owner]".
+    When distributing Covered Software, include this CDDL Header Notice in each file and include
+    the License file at legal/CDDLv1.0.txt. If applicable, add the following below the CDDL
+    Header, with the fields enclosed by brackets [] replaced by your own identifying
+    information: "Portions Copyright [year] [name of copyright owner]".
 
-  Copyright 2014-2016 ForgeRock AS.
+    Copyright 2014-2016 ForgeRock AS.
+    Portions Copyright 2023 Wren Security.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>openig-project</artifactId>
-    <groupId>org.forgerock.openig</groupId>
-    <version>5.0.0-SNAPSHOT</version>
-  </parent>
+    <parent>
+        <groupId>org.wrensecurity.wrenig</groupId>
+        <artifactId>openig-project</artifactId>
+        <version>5.0.0-SNAPSHOT</version>
+    </parent>
 
-  <artifactId>openig-doc</artifactId>
+    <artifactId>openig-doc</artifactId>
 
-  <name>OpenIG doc</name>
-  <description>
-    Documentation samples and aggregated Javadoc
-  </description>
+    <name>Wren:IG - Doc</name>
+    <description>Documentation samples and aggregated Javadoc</description>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.forgerock.commons</groupId>
-      <artifactId>forgerock-util</artifactId>
-    </dependency>
+    <dependencies>
+        <!-- Wren Security Dependencies -->
+        <dependency>
+            <groupId>org.wrensecurity.commons</groupId>
+            <artifactId>forgerock-audit-core</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.commons</groupId>
-      <artifactId>forgerock-audit-core</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.commons</groupId>
+            <artifactId>forgerock-audit-handler-csv</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.commons</groupId>
-      <artifactId>forgerock-audit-json</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.commons</groupId>
+            <artifactId>forgerock-audit-handler-jdbc</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.commons</groupId>
-      <artifactId>forgerock-audit-handler-csv</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.commons</groupId>
+            <artifactId>forgerock-audit-handler-syslog</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.commons</groupId>
-      <artifactId>forgerock-audit-handler-syslog</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.commons</groupId>
+            <artifactId>forgerock-audit-json</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.commons</groupId>
-      <artifactId>forgerock-audit-handler-jdbc</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.commons</groupId>
+            <artifactId>forgerock-util</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.commons</groupId>
-      <artifactId>json-resource</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.commons</groupId>
+            <artifactId>json-resource</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.commons</groupId>
-      <artifactId>json-resource-http</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.commons</groupId>
+            <artifactId>json-resource-http</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.http</groupId>
-      <artifactId>chf-http-servlet</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.http</groupId>
+            <artifactId>chf-http-servlet</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.http</groupId>
-      <artifactId>chf-http-core</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.http</groupId>
+            <artifactId>chf-http-core</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.openig</groupId>
-      <artifactId>openig-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.wrenig</groupId>
+            <artifactId>openig-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.openig</groupId>
-      <artifactId>openig-oauth2</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.wrenig</groupId>
+            <artifactId>openig-oauth2</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.openig</groupId>
-      <artifactId>openig-openam</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.wrenig</groupId>
+            <artifactId>openig-openam</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.openig</groupId>
-      <artifactId>openig-saml</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.wrenig</groupId>
+            <artifactId>openig-saml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-    <dependency>
-      <groupId>org.forgerock.openig</groupId>
-      <artifactId>openig-uma</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+        <dependency>
+            <groupId>org.wrensecurity.wrenig</groupId>
+            <artifactId>openig-uma</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-    <dependency>
-      <groupId>org.glassfish.grizzly</groupId>
-      <artifactId>grizzly-http-server</artifactId>
-    </dependency>
+        <!-- Other dependencies -->
 
-    <dependency>
-      <groupId>net.sourceforge.htmlunit</groupId>
-      <artifactId>htmlunit</artifactId>
-      <version>2.9</version>
-      <scope>test</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.glassfish.grizzly</groupId>
+            <artifactId>grizzly-http-server</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
+        <!-- Test dependencies -->
 
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <scope>test</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>sample-server</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <descriptors>
-                <descriptor>src/main/assembly/jar-with-dependencies-assembly.xml</descriptor>
-              </descriptors>
-              <archive>
-                <manifest>
-                  <addClasspath>true</addClasspath>
-                  <mainClass>org.forgerock.openig.doc.SampleApplication</mainClass>
-                </manifest>
-              </archive>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-      <!--
-        By default, skip Javadoc generation for packages in this module.
-        Javadoc is generated instead with the forgerock-release profile
-        that also builds Javadoc for other modules.
-      -->
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
+    </dependencies>
 
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>port-allocator-maven-plugin</artifactId>
-        <version>1.2</version>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>allocate-ports</goal>
-            </goals>
-            <configuration>
-              <ports>
-                <port>
-                  <name>port</name>
-                </port>
-                <port>
-                  <name>sslPort</name>
-                </port>
-              </ports>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- Run the tests with the Failsafe plugin, not the Surefire plugin. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <configuration>
-          <systemPropertyVariables>
-            <serverPort>${port}</serverPort>
-            <serverSslPort>${sslPort}</serverSslPort>
-          </systemPropertyVariables>
-          <includes>
-            <include>**/*.java</include>
-          </includes>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
-  <profiles>
-    <profile>
-      <id>forgerock-release</id>
-      <build>
+    <build>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <!-- Do not change this execution's ID:
-                     It needs to be in sync with what appears in the forgerock-parent POM -->
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-                <phase>package</phase>
-              </execution>
-            </executions>
-            <configuration>
-              <skip>false</skip>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sample-server</id>
+                        <phase>package</phase>
 
-              <!-- The content of site/apidocs gets squashed during reporting. -->
-              <outputDirectory>${project.build.directory}/site/javadoc</outputDirectory>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
 
-              <!-- Aggregates javadocs from dependencies -->
-              <includeDependencySources>true</includeDependencySources>
-              <includeTransitiveDependencySources>true</includeTransitiveDependencySources>
-              <dependencySourceIncludes>
-                <dependencySourceInclude>org.forgerock.openig:*</dependencySourceInclude>
-                <dependencySourceInclude>org.forgerock.http:*</dependencySourceInclude>
-                <dependencySourceInclude>org.forgerock.commons:*</dependencySourceInclude>
-              </dependencySourceIncludes>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/jar-with-dependencies-assembly.xml</descriptor>
+                            </descriptors>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <mainClass>org.forgerock.openig.doc.SampleApplication</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
-              <author>false</author>
-              <doctitle>OpenIG ${project.version} API</doctitle>
-              <header>OpenIG ${project.version} API</header>
-              <footer>OpenIG ${project.version} API</footer>
-              <bottom>Copyright 2011-2015 ForgeRock AS.</bottom>
-              <links>
-                <link>http://docs.oracle.com/javase/7/docs/api/</link>
-              </links>
+            <!--
+                By default, skip Javadoc generation for packages in this module.
+                Javadoc is generated instead with the release profile
+                that also builds Javadoc for other modules.
+            -->
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
 
-              <!-- Defines groups of packages for the overview page -->
-              <groups>
-                <group>
-                  <title>ForgeRock OpenIG</title>
-                  <packages>org.forgerock.openig*</packages>
-                </group>
-                <group>
-                  <title>ForgeRock Commons Audit</title>
-                  <packages>org.forgerock.audit*</packages>
-                </group>
-                <group>
-                  <title>ForgeRock Http Framework</title>
-                  <packages>org.forgerock.http*</packages>
-                </group>
-                <group>
-                  <title>ForgeRock Utilities</title>
-                  <packages>org.forgerock.util*:org.forgerock.json*</packages>
-                </group>
-              </groups>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>port-allocator-maven-plugin</artifactId>
+                <version>1.2</version>
 
-              <!-- Excludes internal packages from the javadoc generation -->
-              <excludePackageNames>com.*:*.internal</excludePackageNames>
-            </configuration>
-          </plugin>
+                <configuration>
+                    <ports>
+                        <port>
+                            <name>port</name>
+                        </port>
+                        <port>
+                            <name>sslPort</name>
+                        </port>
+                    </ports>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+
+                        <goals>
+                            <goal>allocate-ports</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Run the tests with the Failsafe plugin, not the Surefire plugin. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+
+                <configuration>
+                    <systemPropertyVariables>
+                        <serverPort>${port}</serverPort>
+                        <serverSslPort>${sslPort}</serverSslPort>
+                    </systemPropertyVariables>
+                    <includes>
+                        <include>**/*.java</include>
+                    </includes>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
-      </build>
-    </profile>
-  </profiles>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+
+                        <configuration>
+                            <skip>false</skip>
+
+                            <!-- The content of site/apidocs gets squashed during reporting. -->
+                            <outputDirectory>${project.build.directory}/site/javadoc</outputDirectory>
+
+                            <!-- Aggregates javadocs from dependencies -->
+                            <includeDependencySources>true</includeDependencySources>
+                            <includeTransitiveDependencySources>true</includeTransitiveDependencySources>
+                            <dependencySourceIncludes>
+                                <dependencySourceInclude>org.wrensecurity.wrenig:*</dependencySourceInclude>
+                                <dependencySourceInclude>org.wrensecurity.http:*</dependencySourceInclude>
+                                <dependencySourceInclude>org.wrensecurity.commons:*</dependencySourceInclude>
+                            </dependencySourceIncludes>
+
+                            <author>false</author>
+                            <doctitle>Wren:IG ${project.version} API</doctitle>
+                            <header>Wren:IG ${project.version} API</header>
+                            <footer>Wren:IG ${project.version} API</footer>
+                            <bottom>
+                                Copyright 2011-2015 ForgeRock AS.
+                                Portions Copyright 2023 Wren Security.
+                            </bottom>
+                            <links>
+                                <link>http://docs.oracle.com/javase/7/docs/api/</link>
+                            </links>
+
+                            <!-- Defines groups of packages for the overview page -->
+                            <groups>
+                                <group>
+                                    <title>Wren Security Wren:IG</title>
+                                    <packages>org.wrensecurity.wrenig*</packages>
+                                </group>
+                                <group>
+                                    <title>Wren Security Commons Audit</title>
+                                    <packages>org.forgerock.audit*</packages>
+                                </group>
+                                <group>
+                                    <title>Wren Security Http Framework</title>
+                                    <packages>org.forgerock.http*</packages>
+                                </group>
+                                <group>
+                                    <title>Wren Security Utilities</title>
+                                    <packages>org.forgerock.util*:org.forgerock.json*</packages>
+                                </group>
+                            </groups>
+
+                            <!-- Excludes internal packages from the javadoc generation -->
+                            <excludePackageNames>com.*:*.internal</excludePackageNames>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <!-- Do not change this execution's ID: It needs to be in sync with what appears in the forgerock-parent POM -->
+                                <id>attach-javadocs</id>
+                                <phase>package</phase>
+
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2015 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.jwt.dirty;
@@ -37,7 +38,7 @@ public class DirtySetTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         dirtySet = new DirtySet<>(new HashSet<>(asList("one", "two", "three")), listener);
     }
 
@@ -53,7 +54,7 @@ public class DirtySetTest {
     public void shouldNotNotifyListenerWhenRemoveIsCalledWithNoActualChanges() throws Exception {
         dirtySet.remove("four");
 
-        verifyZeroInteractions(listener);
+        verifyNoInteractions(listener);
         assertThat(dirtySet).containsOnly("one", "two", "three");
     }
 
@@ -69,7 +70,7 @@ public class DirtySetTest {
     public void shouldNotNotifyListenerWhenRemoveAllIsCalledWithNoActualChanges() throws Exception {
         dirtySet.removeAll(Arrays.asList("four"));
 
-        verifyZeroInteractions(listener);
+        verifyNoInteractions(listener);
         assertThat(dirtySet).containsOnly("one", "two", "three");
     }
 
@@ -93,7 +94,7 @@ public class DirtySetTest {
     public void shouldNotNotifyListenerWhenRetainAllIsCalledWithNoChanges() throws Exception {
         dirtySet.retainAll(Arrays.asList("one", "two", "three"));
 
-        verifyZeroInteractions(listener);
+        verifyNoInteractions(listener);
         assertThat(dirtySet).containsOnly("one", "two", "three");
     }
 }

@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.openam;
@@ -22,9 +23,9 @@ import static org.forgerock.http.util.Uris.urlEncodeQueryParameterNameOrValue;
 import static org.forgerock.json.JsonValue.array;
 import static org.forgerock.json.JsonValue.json;
 import static org.forgerock.json.JsonValue.object;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import java.net.URI;
 
@@ -56,7 +57,7 @@ public class AuthLevelConditionAdviceFilterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         filter = new AuthLevelConditionAdviceFilter(OPENAM_URI, MY_REALM);
     }
 
@@ -84,7 +85,7 @@ public class AuthLevelConditionAdviceFilterTest {
                           "realm=" + urlEncodeQueryParameterNameOrValue(MY_REALM),
                           "authIndexType=composite_advice",
                           "authIndexValue=" + urlEncodeQueryParameterNameOrValue(expectedQueryParameterAdvice));
-        verifyZeroInteractions(next);
+        verifyNoInteractions(next);
     }
 
     private static Context contextWithPolicyDecisionAdvices(boolean withAdvice) {

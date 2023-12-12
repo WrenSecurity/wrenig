@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2015-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 package org.forgerock.http.filter.throttling;
 
@@ -20,13 +21,13 @@ import static org.forgerock.http.protocol.Response.newResponsePromise;
 import static org.forgerock.http.protocol.Responses.newInternalServerError;
 import static org.forgerock.util.promise.Promises.newResultPromise;
 import static org.forgerock.util.time.Duration.duration;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.concurrent.CountDownLatch;
@@ -93,7 +94,7 @@ public class ThrottlingFilterTest {
 
         // Then
         verify(handler).handle(eq(context), eq(request));
-        verifyZeroInteractions(throttlingStrategy);
+        verifyNoInteractions(throttlingStrategy);
     }
 
     @Test
@@ -183,7 +184,7 @@ public class ThrottlingFilterTest {
             Response response = filter.filter(new RootContext(), new Request(), spiedHandler).get();
 
             // The throttling strategy refuses it so the handler does not have to be called and must return a 429.
-            verifyZeroInteractions(spiedHandler);
+            verifyNoInteractions(spiedHandler);
             assertThat(response.getStatus()).isEqualTo(Status.TOO_MANY_REQUESTS);
             assertThat(response.getHeaders().getFirst("Retry-After")).isEqualTo("1");
         } finally {

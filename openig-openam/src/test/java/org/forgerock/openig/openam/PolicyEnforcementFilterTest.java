@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2015-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.openam;
@@ -41,16 +42,15 @@ import static org.forgerock.openig.openam.PolicyEnforcementFilter.CachePolicyDec
 import static org.forgerock.openig.openam.PolicyEnforcementFilter.Heaplet.asFunction;
 import static org.forgerock.openig.openam.PolicyEnforcementFilter.Heaplet.normalizeToJsonEndpoint;
 import static org.forgerock.util.time.Duration.duration;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.same;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.net.URI;
 import java.util.List;
@@ -84,6 +84,7 @@ import org.forgerock.util.time.TimeService;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -123,7 +124,7 @@ public class PolicyEnforcementFilterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
         attributesContext = new AttributesContext(new RootContext());
         attributesContext.getAttributes().put("password", "hifalutin");
         attributesContext.getAttributes().put("ssoTokenSubject", TOKEN);
@@ -278,7 +279,7 @@ public class PolicyEnforcementFilterTest {
         PolicyDecisionContext decisionContext = contextCaptor.getValue().asContext(PolicyDecisionContext.class);
         assertThatAttributesAreInPolicyDecisionContext(decisionContext);
         assertThatAdvicesAreInPolicyDecisionContext(decisionContext);
-        verifyZeroInteractions(next);
+        verifyNoInteractions(next);
     }
 
     @Test
@@ -303,7 +304,7 @@ public class PolicyEnforcementFilterTest {
         assertThat(decisionContext.getAttributes()).isEmpty();
         assertThat(decisionContext.getAdvices()).isEmpty();
 
-        verifyZeroInteractions(next);
+        verifyNoInteractions(next);
     }
 
     @Test
@@ -394,7 +395,7 @@ public class PolicyEnforcementFilterTest {
     public static void shouldSucceedToCreateBaseUri(final String realm) throws Exception {
         assertThat(normalizeToJsonEndpoint(new URI("http://www.example.com:8090/openam/"), realm).toASCIIString())
             .endsWith("/")
-            .containsSequence("http://www.example.com:8090/openam/json/",
+            .contains("http://www.example.com:8090/openam/json/",
                               realm != null ? realm.trim() : "");
     }
 
@@ -425,7 +426,7 @@ public class PolicyEnforcementFilterTest {
                           resourceRequest,
                           next).get();
             // Then
-            verify(requestHandler).handleAction(any(PolicyDecisionContext.class), any(ActionRequest.class));
+            verify(requestHandler).handleAction(any(AttributesContext.class), any(ActionRequest.class));
             verify(next).handle(any(PolicyDecisionContext.class), same(resourceRequest));
             verify(executorService).schedule(captor.capture(), anyLong(), any(TimeUnit.class));
 
@@ -478,8 +479,8 @@ public class PolicyEnforcementFilterTest {
                           next).get();
             // Then
             verify(requestHandler).handleAction(any(Context.class), any(ActionRequest.class));
-            verifyZeroInteractions(next);
-            verifyZeroInteractions(executorService);
+            verifyNoInteractions(next);
+            verifyNoInteractions(executorService);
         }
     }
 

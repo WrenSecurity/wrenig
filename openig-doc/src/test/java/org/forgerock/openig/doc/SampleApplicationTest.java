@@ -12,31 +12,29 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.doc;
 
-import static com.gargoylesoftware.htmlunit.HttpMethod.GET;
-import static com.gargoylesoftware.htmlunit.HttpMethod.POST;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.logging.Logger;
-
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
-import com.gargoylesoftware.htmlunit.FormEncodingType;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebRequest;
-import com.gargoylesoftware.htmlunit.WebResponse;
-import com.gargoylesoftware.htmlunit.util.NameValuePair;
 
 @SuppressWarnings("javadoc")
 public class SampleApplicationTest {
@@ -47,7 +45,7 @@ public class SampleApplicationTest {
     private static final String PROFILE_TITLE = "Howdy, demo";
 
     private static HttpServer httpServer;
-    private WebClient webClient;
+    private HttpClient httpClient;
     private String port;
     private String sslPort;
 
@@ -60,15 +58,13 @@ public class SampleApplicationTest {
         sslPort = System.getProperty("serverSslPort");
         logger.info("Port: " + port + ", SSL Port: " + sslPort);
         httpServer = SampleApplication.start(Integer.parseInt(port), Integer.parseInt(sslPort));
-        webClient = new WebClient();
-        webClient.setUseInsecureSSL(true);
         httpServerPath = "http://localhost:" + port;
         httpsServerPath = "https://localhost:" + sslPort;
-    }
-
-    @AfterTest
-    public void tearDown() throws Exception {
-        webClient.closeAllWindows();
+        // Prepare HTTP client ignoring SSL server certificate verification
+        System.setProperty("jdk.internal.httpclient.disableHostnameVerification", "true");
+        SSLContext sslContext = SSLContext.getInstance("SSL");
+        sslContext.init(null, new TrustManager[] { new TrustAllCertsManager() }, new SecureRandom());
+        httpClient = HttpClient.newBuilder().sslContext(sslContext).build();
     }
 
     @AfterClass
@@ -81,11 +77,13 @@ public class SampleApplicationTest {
     public void testGetHomePage() throws Exception {
         logger.info("Testing equivalent of curl --verbose " + httpServerPath + "/home");
 
-        final WebRequest webRequest = new WebRequest(new URL(httpServerPath + "/home"), GET);
-        final WebResponse webResponse = webClient.loadWebResponse(webRequest);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(httpServerPath + "/home"))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(webResponse.getStatusCode(), 200);
-        assertTrue(webResponse.getContentAsString().contains(HOME_TITLE));
+        assertEquals(response.statusCode(), 200);
+        assertTrue(response.body().contains(HOME_TITLE));
     }
 
     @Test
@@ -93,11 +91,13 @@ public class SampleApplicationTest {
         // Check for HTTP 200 OK and the Login page in the body of the response
         logger.info("Testing equivalent of curl --verbose " + httpServerPath);
 
-        final WebRequest webRequest = new WebRequest(new URL(httpServerPath), GET);
-        final WebResponse webResponse = webClient.loadWebResponse(webRequest);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(httpServerPath))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(webResponse.getStatusCode(), 200);
-        assertTrue(webResponse.getContentAsString().contains(LOGIN_TITLE));
+        assertEquals(response.statusCode(), 200);
+        assertTrue(response.body().contains(LOGIN_TITLE));
     }
 
     @Test
@@ -106,12 +106,14 @@ public class SampleApplicationTest {
         logger.info("Testing the equivalent of curl --verbose " + httpsServerPath);
 
         // When
-        final WebRequest webRequest = new WebRequest(new URL(httpsServerPath), GET);
-        final WebResponse webResponse = webClient.loadWebResponse(webRequest);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(httpsServerPath))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
         // Then
-        assertEquals(webResponse.getStatusCode(), 200);
-        assertTrue(webResponse.getContentAsString().contains(LOGIN_TITLE));
+        assertEquals(response.statusCode(), 200);
+        assertTrue(response.body().contains(LOGIN_TITLE));
     }
 
     @Test
@@ -121,13 +123,15 @@ public class SampleApplicationTest {
         logger.info("Testing equivalent of "
                 + "curl --verbose --data \"username=demo&password=changeit\" " + httpServerPath);
 
-        final WebRequest webRequest = new WebRequest(new URL(httpServerPath), POST);
-        webRequest.setEncodingType(FormEncodingType.URL_ENCODED);
-        webRequest.setRequestBody("username=demo&password=changeit");
-        final WebResponse webResponse = webClient.loadWebResponse(webRequest);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(httpsServerPath))
+                .headers("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString("username=demo&password=changeit"))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(webResponse.getStatusCode(), 200);
-        assertTrue(webResponse.getContentAsString().contains("Howdy, demo"));
+        assertEquals(response.statusCode(), 200);
+        assertTrue(response.body().contains("Howdy, demo"));
     }
 
     @Test
@@ -135,13 +139,16 @@ public class SampleApplicationTest {
         logger.info("Testing equivalent of "
                 + "curl --verbose --H \"username: demo\" --H \"password=changeit\" " + httpServerPath);
 
-        final WebRequest webRequest = new WebRequest(new URL(httpServerPath), POST);
-        webRequest.setAdditionalHeader("username", "demo");
-        webRequest.setAdditionalHeader("password", "changeit");
-        final WebResponse webResponse = webClient.loadWebResponse(webRequest);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(httpsServerPath))
+                .headers("username", "demo")
+                .headers("password", "changeit")
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(webResponse.getStatusCode(), 200);
-        assertTrue(webResponse.getContentAsString().contains(PROFILE_TITLE));
+        assertEquals(response.statusCode(), 200);
+        assertTrue(response.body().contains(PROFILE_TITLE));
     }
 
     @Test
@@ -151,12 +158,14 @@ public class SampleApplicationTest {
         logger.info("Testing equivalent of "
                 + "curl --verbose --data \"username=no-password\" " + httpServerPath);
 
-        final WebRequest webRequest = new WebRequest(new URL(httpServerPath), POST);
-        webRequest.setEncodingType(FormEncodingType.URL_ENCODED);
-        webRequest.setRequestBody("username=no-password");
-        final WebResponse webResponse = webClient.loadWebResponse(webRequest);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(httpsServerPath))
+                .headers("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString("username=no-password"))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(webResponse.getStatusCode(), 401);
+        assertEquals(response.statusCode(), 401);
     }
 
     @Test
@@ -166,28 +175,29 @@ public class SampleApplicationTest {
         logger.info("Testing equivalent of "
                 + "curl --verbose --data \"username=wrong&password=wrong\" " + httpServerPath);
 
-        final WebRequest webRequest = new WebRequest(new URL(httpServerPath), POST);
-        webRequest.setEncodingType(FormEncodingType.URL_ENCODED);
-        webRequest.setRequestBody("username=wrong&password=wrong");
-        final WebResponse webResponse = webClient.loadWebResponse(webRequest);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(httpsServerPath))
+                .headers("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString("username=wrong&password=wrong"))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(webResponse.getStatusCode(), 403);
+        assertEquals(response.statusCode(), 403);
     }
 
     @Test
     public void testValidWebFingerRequest() throws Exception {
         logger.info("Testing equivalent of curl " + httpServerPath
                 + "/.well-known/webfinger?resource=resource");
-        final URL webFingerUrl = new URL(httpServerPath + "/.well-known/webfinger");
+        final String webFingerUrl = httpServerPath + "/.well-known/webfinger?resource=resource";
 
-        final WebRequest webRequest = new WebRequest(webFingerUrl, GET);
-        final List<NameValuePair> parameters = new ArrayList<>();
-        parameters.add(new NameValuePair("resource", "resource"));
-        webRequest.setRequestParameters(parameters);
-        final WebResponse webResponse = webClient.loadWebResponse(webRequest);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(webFingerUrl))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(webResponse.getStatusCode(), 200);
-        assertEquals(webResponse.getContentAsString(),
+        assertEquals(response.statusCode(), 200);
+        assertEquals(response.body(),
                 "{ \"subject\": \"resource\", \"links\": "
                         + "[ { \"rel\": \"http://openid.net/specs/connect/1.0/issuer\", "
                         + "\"href\": \"http://openam.example.com:8088/openam/oauth2\" } ] }");
@@ -197,12 +207,34 @@ public class SampleApplicationTest {
     public void testBrokenWebFingerRequest() throws Exception {
         logger.info("Testing equivalent of curl " + httpServerPath + "/.well-known/webfinger");
 
-        final URL webFingerUrl = new URL(httpServerPath + "/.well-known/webfinger");
-        final WebRequest webRequest = new WebRequest(webFingerUrl, GET);
-        final WebResponse webResponse = webClient.loadWebResponse(webRequest);
+        final String webFingerUrl = httpServerPath + "/.well-known/webfinger";
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(webFingerUrl))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(webResponse.getStatusCode(), 400);
-        assertEquals(webResponse.getContentAsString(),
+        assertEquals(response.statusCode(), 400);
+        assertEquals(response.body(),
                 "{ \"error\": \"Request must include a resource parameter.\" }");
+    }
+
+    /**
+     * Trust manager accepting all certificates.
+     */
+    private class TrustAllCertsManager implements X509TrustManager {
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+        }
+
     }
 }

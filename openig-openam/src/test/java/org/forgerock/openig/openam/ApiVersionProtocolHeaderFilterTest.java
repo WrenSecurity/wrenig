@@ -12,19 +12,19 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.openam;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.forgerock.http.protocol.Status.INTERNAL_SERVER_ERROR;
 import static org.forgerock.http.routing.Version.version;
 import static org.forgerock.json.resource.http.HttpUtils.PROTOCOL_VERSION_1;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import java.net.URI;
 
@@ -34,8 +34,8 @@ import org.forgerock.http.header.MalformedHeaderException;
 import org.forgerock.http.protocol.Request;
 import org.forgerock.http.protocol.Response;
 import org.forgerock.http.routing.Version;
-import org.forgerock.services.context.Context;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -52,7 +52,7 @@ public class ApiVersionProtocolHeaderFilterTest {
 
     @BeforeMethod
     public void setUp() {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
         request = new Request();
         request.setUri(RESOURCE_URI);
         request.getHeaders().put(new AcceptApiVersionHeader(PROTOCOL_VERSION_1, RESOURCE_VERSION));
@@ -73,7 +73,7 @@ public class ApiVersionProtocolHeaderFilterTest {
                 .filter(null, request, next)
                 .get();
         // then
-        verifyZeroInteractions(next);
+        verifyNoInteractions(next);
         assertThat(response.getStatus()).isEqualTo(INTERNAL_SERVER_ERROR);
         assertThat(response.getCause()).isInstanceOf(MalformedHeaderException.class);
     }
@@ -91,7 +91,7 @@ public class ApiVersionProtocolHeaderFilterTest {
         new ApiVersionProtocolHeaderFilter(protocolVersion).filter(null, request, next);
 
         // then
-        verify(next).handle(any(Context.class), eq(request));
+        verify(next).handle(any(), eq(request));
         assertThat(request.getUri().asURI()).isEqualTo(RESOURCE_URI);
         final AcceptApiVersionHeader header = request.getHeaders().get(AcceptApiVersionHeader.class);
         assertThat(header.getProtocolVersion()).isEqualTo(protocolVersion);

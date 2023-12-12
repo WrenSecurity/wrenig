@@ -14,7 +14,6 @@
  * Copyright 2016 ForgeRock AS.
  */
 
-// eslint-disable-next-line requirejs/no-named-define
 define("config/main", [
     "./routes/OpenIGRoutesConfig",
     "./messages/CommonMessages",

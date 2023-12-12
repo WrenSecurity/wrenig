@@ -1,6 +1,19 @@
+# Maven
+dependency-reduced-pom.xml
 target/
-.idea/
+test-output/
+
+# MacOS
+.DS_Store
+
+# IDEA
 *.iml
-.classpath
+.idea/
+
+# Eclipse
 .project
-.settings/
+.settings
+.classpath
+
+# VSCode
+.vscode/

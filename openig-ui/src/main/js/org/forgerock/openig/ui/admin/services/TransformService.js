@@ -300,7 +300,7 @@ define([
             if (capture.entity === true) {
                 this.heapOf(routeConfig).push(this.newCaptureDecorator());
             } // If entity capture is not required, we'll rely on the default `capture` decorator provided by OpenIG,
-              // so, if we generate a capture decorator, it will always have the entity capture option set.
+            // so, if we generate a capture decorator, it will always have the entity capture option set.
         }
 
         // Create the main "handler" attribute with the configured chain

@@ -104,9 +104,9 @@ define([
                     defaultValues.push(mandatory);
                     this.setValue(
                         _(defaultValues)
-                        .flattenDeep()
-                        .uniq()
-                        .value()
+                            .flattenDeep()
+                            .uniq()
+                            .value()
                     );
                 }
             },

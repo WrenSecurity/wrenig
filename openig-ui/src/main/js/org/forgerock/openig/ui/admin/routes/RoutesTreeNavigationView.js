@@ -131,9 +131,9 @@ define([
                 .then(
                     () => {
                         EventManager.sendEvent(
-                                Constants.EVENT_CHANGE_VIEW,
-                                { route: Router.configuration.routes.listRoutesView }
-                       );
+                            Constants.EVENT_CHANGE_VIEW,
+                            { route: Router.configuration.routes.listRoutesView }
+                        );
                     }
                 );
         }

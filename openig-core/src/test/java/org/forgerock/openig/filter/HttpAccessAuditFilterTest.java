@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2015-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.filter;
@@ -22,9 +23,9 @@ import static org.forgerock.json.JsonValue.json;
 import static org.forgerock.json.JsonValue.object;
 import static org.forgerock.json.resource.Responses.newResourceResponse;
 import static org.forgerock.services.context.ClientContext.buildExternalClientContext;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
@@ -62,7 +63,7 @@ public class HttpAccessAuditFilterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         request = new Request();
         request.setMethod("GET");
@@ -94,7 +95,7 @@ public class HttpAccessAuditFilterTest {
                       request,
                       new ResponseHandler((Response) null)).get();
 
-        verifyZeroInteractions(reqHandler);
+        verifyNoInteractions(reqHandler);
     }
 
     private void verifyAuditServiceCall(RequestHandler handler, Status status) {

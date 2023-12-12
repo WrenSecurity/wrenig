@@ -12,19 +12,19 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.http.filter;
 
 import static org.forgerock.util.promise.Promises.newResultPromise;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.forgerock.http.ContextAndRequest;
 import org.forgerock.http.Filter;
@@ -34,6 +34,7 @@ import org.forgerock.services.context.Context;
 import org.forgerock.services.context.RootContext;
 import org.forgerock.util.AsyncFunction;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -51,7 +52,7 @@ public class ConditionalFilterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
         context = new RootContext();
         request = new Request();
     }
@@ -65,7 +66,7 @@ public class ConditionalFilterTest {
     @Test
     public void shouldSkipTheDelegatedFilter() throws Exception {
         new ConditionalFilter(delegate, false).filter(context, request, next);
-        verifyZeroInteractions(delegate);
+        verifyNoInteractions(delegate);
         verify(next).handle(eq(context), eq(request));
     }
 
@@ -79,7 +80,7 @@ public class ConditionalFilterTest {
         // First time the function evaluates to false
         filter.filter(context, request, next);
 
-        verifyZeroInteractions(delegate);
+        verifyNoInteractions(delegate);
         verify(next).handle(eq(context), eq(request));
 
         // Second time the function evaluates to true
@@ -87,7 +88,7 @@ public class ConditionalFilterTest {
         filter.filter(context, request, next);
 
         verify(delegate).filter(eq(context), eq(request), eq(next));
-        verifyZeroInteractions(next);
+        verifyNoInteractions(next);
     }
 
     @Test
@@ -99,7 +100,7 @@ public class ConditionalFilterTest {
 
         filter.filter(context, request, next);
 
-        verifyZeroInteractions(delegate);
+        verifyNoInteractions(delegate);
         verify(next).handle(eq(context), eq(request));
     }
 }

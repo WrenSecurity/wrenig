@@ -23,11 +23,11 @@ define(
         "org/forgerock/openig/ui/admin/util/FormUtils"
     ],
     (_,
-     form2js,
-     i18n,
-     AbstractRouteView,
-     FormUtils
-) => (
+        form2js,
+        i18n,
+        AbstractRouteView,
+        FormUtils
+    ) => (
         class Capture extends AbstractRouteView {
             constructor (options) {
                 super();
@@ -126,16 +126,16 @@ define(
                     this.data.routeData.unset("capture");
                 }
                 this.data.routeData.save()
-                        .then(
-                            () => {
-                                const submit = this.$el.find(".js-save-btn");
-                                submit.attr("disabled", true);
-                                this.showNotification(this.NOTIFICATION_TYPE.SaveSuccess);
-                            },
-                            () => {
-                                this.showNotification(this.NOTIFICATION_TYPE.SaveFailed);
-                            }
-                        );
+                    .then(
+                        () => {
+                            const submit = this.$el.find(".js-save-btn");
+                            submit.attr("disabled", true);
+                            this.showNotification(this.NOTIFICATION_TYPE.SaveSuccess);
+                        },
+                        () => {
+                            this.showNotification(this.NOTIFICATION_TYPE.SaveFailed);
+                        }
+                    );
             }
 
             onToggleSwitch (event) {
@@ -147,7 +147,7 @@ define(
                 const capture = this.findCapture();
                 const newCapture = this.formToCapture(form);
 
-                    // If captures are equal: disable the submit button, enable it otherwise
+                // If captures are equal: disable the submit button, enable it otherwise
                 submit.attr("disabled", _.isEqual(capture, newCapture));
             }
 
@@ -195,5 +195,5 @@ define(
                     }
                 };
             }}
-        )
-    );
+    )
+);

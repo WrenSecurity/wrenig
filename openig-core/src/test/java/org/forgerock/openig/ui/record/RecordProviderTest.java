@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.ui.record;
@@ -27,11 +28,11 @@ import static org.forgerock.json.resource.Requests.newPatchRequest;
 import static org.forgerock.json.resource.Requests.newQueryRequest;
 import static org.forgerock.json.resource.Requests.newReadRequest;
 import static org.forgerock.json.resource.Requests.newUpdateRequest;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -78,7 +79,7 @@ public class RecordProviderTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         provider = new RecordProvider(service);
     }
 
@@ -179,7 +180,7 @@ public class RecordProviderTest {
             provider.queryCollection(null, queryRequest, queryResourceHandler)
                     .getOrThrow();
         } finally {
-            verifyZeroInteractions(queryResourceHandler);
+            verifyNoInteractions(queryResourceHandler);
         }
     }
 
@@ -190,7 +191,7 @@ public class RecordProviderTest {
             provider.queryCollection(null, queryRequest, queryResourceHandler)
                     .getOrThrow();
         } finally {
-            verifyZeroInteractions(queryResourceHandler);
+            verifyNoInteractions(queryResourceHandler);
         }
     }
 
@@ -201,7 +202,7 @@ public class RecordProviderTest {
             provider.queryCollection(null, queryRequest, queryResourceHandler)
                     .getOrThrow();
         } finally {
-            verifyZeroInteractions(queryResourceHandler);
+            verifyNoInteractions(queryResourceHandler);
         }
     }
 
@@ -212,7 +213,7 @@ public class RecordProviderTest {
             provider.queryCollection(null, queryRequest, queryResourceHandler)
                     .getOrThrow();
         } finally {
-            verifyZeroInteractions(queryResourceHandler);
+            verifyNoInteractions(queryResourceHandler);
         }
     }
 
@@ -225,7 +226,7 @@ public class RecordProviderTest {
             provider.queryCollection(null, queryRequest, queryResourceHandler)
                     .getOrThrow();
         } finally {
-            verifyZeroInteractions(queryResourceHandler);
+            verifyNoInteractions(queryResourceHandler);
         }
     }
 
@@ -276,7 +277,7 @@ public class RecordProviderTest {
 
     @Test
     public void shouldUpdateInstanceWithProvidedCatchAllRevision() throws Exception {
-        when(service.update(eq(ID), isNull(String.class), any(JsonValue.class)))
+        when(service.update(eq(ID), isNull(), any(JsonValue.class)))
                 .thenReturn(UPDATED_RECORD);
 
         // HttpAdapter transform If-Match "*" in a null revision
@@ -308,7 +309,7 @@ public class RecordProviderTest {
 
     @Test(expectedExceptions = InternalServerErrorException.class)
     public void shouldNotUpdateInstanceWhenIoErrorOccurs() throws Exception {
-        when(service.update(eq(ID), isNull(String.class), any(JsonValue.class)))
+        when(service.update(eq(ID), isNull(), any(JsonValue.class)))
                 .thenThrow(new IOException());
 
         UpdateRequest updateRequest = newUpdateRequest(PATH, json(object()));

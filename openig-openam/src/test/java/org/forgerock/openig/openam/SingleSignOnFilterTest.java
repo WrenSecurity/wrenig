@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 package org.forgerock.openig.openam;
 
@@ -27,13 +28,12 @@ import static org.forgerock.json.JsonValue.object;
 import static org.forgerock.json.resource.Responses.newActionResponse;
 import static org.forgerock.json.resource.http.CrestHttp.newRequestHandler;
 import static org.forgerock.openig.heap.Keys.FORGEROCK_CLIENT_HANDLER_HEAP_KEY;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.net.URI;
 import java.util.Collections;
@@ -59,6 +59,7 @@ import org.forgerock.util.promise.Promise;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -85,7 +86,7 @@ public class SingleSignOnFilterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
         request = new Request();
         request.setMethod("GET").setUri(RESOURCE_URI);
         context = new UriRouterContext(new RootContext(),
@@ -153,7 +154,7 @@ public class SingleSignOnFilterTest {
         final Response response = buildSingleSignOnFilter().filter(context, request, next).get();
 
         // Then
-        verifyZeroInteractions(next, requestHandler);
+        verifyNoInteractions(next, requestHandler);
         assertThat(response.getStatus()).isEqualTo(FOUND);
         assertThat(response.getHeaders().getFirst(LocationHeader.NAME))
                 .contains(OPENAM_URI.toASCIIString(), "?goto=" + context.getOriginalUri() + "&realm=" + MY_REALM);
@@ -195,7 +196,7 @@ public class SingleSignOnFilterTest {
 
         // Then
         verify(requestHandler).handleAction(eq(context), any(ActionRequest.class));
-        verifyZeroInteractions(next);
+        verifyNoInteractions(next);
         assertThat(response.getStatus()).isEqualTo(FOUND);
         assertThat(response.getHeaders().getFirst(LocationHeader.NAME))
                 .contains(OPENAM_URI.toASCIIString(), "?goto=" + context.getOriginalUri() + "&realm=" + MY_REALM);
@@ -247,7 +248,7 @@ public class SingleSignOnFilterTest {
 
         // Then
         verify(requestHandler).handleAction(eq(context), any(ActionRequest.class));
-        verifyZeroInteractions(next);
+        verifyNoInteractions(next);
         assertThat(response.getStatus()).isEqualTo(INTERNAL_SERVER_ERROR);
     }
 

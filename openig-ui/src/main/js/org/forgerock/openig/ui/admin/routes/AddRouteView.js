@@ -81,11 +81,11 @@ define([
             this.data.routeId = router.getCurrentHash().match(router.currentRoute.url)[1];
             if (this.data.routeId) {
                 return RoutesCollection.byRouteId(this.data.routeId)
-                        .then((original) => {
-                            const duplicate = original.clone();
-                            duplicate.unset("_id");
-                            return duplicate;
-                        });
+                    .then((original) => {
+                        const duplicate = original.clone();
+                        duplicate.unset("_id");
+                        return duplicate;
+                    });
             } else {
                 return RouteModel.newRouteModel();
             }

@@ -26,7 +26,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-eslint");
     grunt.loadNpmTasks("grunt-notify");
     grunt.loadNpmTasks("grunt-sync");
-    grunt.loadNpmTasks("grunt-serve");
 
     var targetDirectory = "target/www",
         testTargetDirectory = "target/test",
@@ -59,10 +58,7 @@ module.exports = function (grunt) {
                 src: [
                     "src/main/js/**/*.js",
                     "src/test/js/**/*.js"
-                ],
-                options: {
-                    format: require.resolve("eslint-formatter-warning-summary")
-                }
+                ]
             }
         },
         less: {
@@ -89,7 +85,18 @@ module.exports = function (grunt) {
 
         },
         qunit: {
-            all: [testTargetDirectory + "/qunit.html"]
+            all: [testTargetDirectory + "/qunit.html"],
+            options: {
+                puppeteer: {
+                    ignoreDefaultArgs: true,
+                    args: [
+                        process.env.DISABLE_PUPPETEER_SANDBOX ? "--no-sandbox" : "",
+                        "--headless=new",
+                        "--allow-file-access-from-files",
+                        "--disable-dev-shm-usage"
+                    ]
+                }
+            }
         },
         requirejs: {
             /**
@@ -97,8 +104,8 @@ module.exports = function (grunt) {
              */
             compile: {
                 options: {
-                    baseUrl: compositionDirectory,
-                    mainConfigFile: compositionDirectory + "/main.js",
+                    baseUrl: targetDirectory,
+                    mainConfigFile: targetDirectory + "/main.js",
                     out: targetDirectory + "/main.js",
                     include: ["main"],
                     preserveLicenseComments: false,
@@ -119,7 +126,7 @@ module.exports = function (grunt) {
         notify_hooks: {
             options: {
                 enabled: true,
-                title: "ForgeRock UI QUnit Tests"
+                title: "Wren:IG UI QUnit Tests"
             }
         },
         /**
@@ -216,15 +223,6 @@ module.exports = function (grunt) {
                 tasks: ["build-dev"]
             }
         },
-        serve: {
-            options: {
-                livereload: true,
-                serve: {
-                    path: targetDirectory
-                },
-                port: 9000
-            }
-        },
         babel: {
             options: {
                 env: {
@@ -232,8 +230,7 @@ module.exports = function (grunt) {
                         sourceMaps: true
                     }
                 },
-                ignore: ["libs/"],
-                presets: ["es2015"]
+                ignore: ["libs/"]
             },
             source: {
                 files: watchDirs.map(function (dir) {
@@ -264,6 +261,30 @@ module.exports = function (grunt) {
                     src: ["*.css"],
                     dest: compositionDirectory + "/css"
                 }]
+            },
+            /**
+             * Copy libs installed by NPM or provided locally.
+             */
+            libs: {
+                files: [
+                    // JS - npm
+                    { src: "node_modules/sinon/pkg/sinon-1.15.4.js", dest: "target/www/libs/sinon-1.15.4.js" },
+                    { src: "node_modules/qunit/qunit/qunit.js", dest: "target/www/libs/qunit-1.15.0.js" },
+                    { src: "node_modules/d3/d3.min.js", dest: "target/www/libs/d3-3.5.5-min.js" },
+                    { src: "node_modules/dragula/dist/dragula.min.js", dest: "target/www/libs/dragula-3.6.7-min.js" },
+
+                    // JS - custom
+                    { src: "libs/js/dimple-2.1.2-min.js", dest: "target/www/libs/dimple-2.1.2-min.js" },
+
+                    // CSS - npm
+                    { src: "node_modules/qunit/qunit/qunit.css", dest: "target/www/css/qunit-1.15.0.css" },
+                    { src: "node_modules/dragula/dist/dragula.min.css", dest: "target/www/css/dragula-3.6.7-min.css" },
+
+                    // Codemirror
+                    { src: "node_modules/codemirror/lib/codemirror.js", dest: "target/www/libs/codemirror/lib/codemirror.js" },
+                    { src: "node_modules/codemirror/mode/javascript/javascript.js", dest: "target/www/libs/codemirror/mode/javascript/javascript.js" },
+                    { src: "node_modules/codemirror/lib/codemirror.css", dest: "target/www/css/codemirror/codemirror.css" }
+                ]
             }
         }
     });
@@ -271,6 +292,7 @@ module.exports = function (grunt) {
     grunt.registerTask("build", [
         "eslint",
         "sync:compose",
+        "copy:libs",
         "copy:dependencies",
         "sync:staticfiles",
         "less",
@@ -286,6 +308,7 @@ module.exports = function (grunt) {
     grunt.registerTask("build-dev", [
         "eslint",
         "sync:compose",
+        "copy:libs",
         "copy:dependencies",
         "sync:staticfiles",
         "less",
@@ -298,7 +321,6 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask("dev", ["build-dev", "watch"]);
-    grunt.registerTask("web", ["serve"]); // use Serve module for local development
     grunt.registerTask("default", "dev");
 
     grunt.task.run("notify_hooks");
