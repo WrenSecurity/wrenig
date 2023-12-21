@@ -33,7 +33,7 @@
  */
 
 def userPass = username + ":" + password
-def base64UserPass = userPass.getBytes().encodeBase64()
+def base64UserPass = userPass.asType(byte[]).encodeBase64()
 request.headers.add("Authorization", "Basic ${base64UserPass}" as String)
 
 // Credentials are only base64-encoded, not encrypted: Set scheme to HTTPS.

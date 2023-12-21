@@ -12,12 +12,14 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2014 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.decoration.global;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.forgerock.json.JsonValue.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import org.forgerock.json.JsonValue;
@@ -48,7 +50,7 @@ public class GlobalDecoratorTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(context.getHeap()).thenReturn(heap);
         when(decorator.accepts(any(Class.class))).thenReturn(true);
     }
@@ -89,7 +91,7 @@ public class GlobalDecoratorTest {
         Object delegate = new Object();
         globalDecorator.decorate(delegate, null, context);
 
-        verify(decorator, times(2)).decorate(anyObject(), captor.capture(), eq(context));
+        verify(decorator, times(2)).decorate(any(), captor.capture(), eq(context));
         // Verify that the JSonValues are the one we're expecting
         assertThat(captor.getAllValues().get(0).asString()).isEqualTo("value-1");
         assertThat(captor.getAllValues().get(1).asString()).isEqualTo("value-2");
@@ -105,7 +107,7 @@ public class GlobalDecoratorTest {
         Object delegate = new Object();
         globalDecorator.decorate(delegate, null, context);
 
-        verify(decorator).decorate(anyObject(), captor.capture(), eq(context));
+        verify(decorator).decorate(any(), captor.capture(), eq(context));
         // Verify that the JSonValues are the one we're expecting
         assertThat(captor.getAllValues().get(0).asString()).isEqualTo("value-2");
     }
@@ -123,7 +125,7 @@ public class GlobalDecoratorTest {
         Object delegate = new Object();
         globalDecorator.decorate(delegate, null, context);
 
-        verify(decorator).decorate(anyObject(), captor.capture(), eq(context));
+        verify(decorator).decorate(any(), captor.capture(), eq(context));
         // Verify that the JSonValues are the one we're expecting
         assertThat(captor.getAllValues().get(0).asString()).isEqualTo("value-2");
     }

@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.filter.throttling;
@@ -24,7 +25,7 @@ import static org.forgerock.openig.util.JsonValues.requiredHeapObject;
 import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
 
-import org.forgerock.guava.common.base.Ticker;
+import org.wrensecurity.guava.common.base.Ticker;
 import org.forgerock.http.filter.throttling.FixedRateThrottlingPolicy;
 import org.forgerock.http.filter.throttling.ThrottlingFilter;
 import org.forgerock.http.filter.throttling.ThrottlingPolicy;

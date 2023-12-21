@@ -259,10 +259,10 @@ define([
             if (this.routeData.get("name") !== target.value) {
                 RoutesUtils.checkName(target.value)
                     .then(
-                    (checkResult) => {
-                        $(target).data("custom-valid-msg", checkResult || "");
-                        $(target).trigger("validate");
-                    });
+                        (checkResult) => {
+                            $(target).data("custom-valid-msg", checkResult || "");
+                            $(target).trigger("validate");
+                        });
             }
         }
     })

@@ -12,13 +12,14 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2015-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.handler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import org.forgerock.http.Handler;
@@ -49,7 +50,7 @@ public class SequenceHandlerTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         promise1 = PromiseImpl.create();
         promise2 = PromiseImpl.create();
         when(handler1.handle(any(Context.class), any(Request.class)))
@@ -101,6 +102,6 @@ public class SequenceHandlerTest {
         Request request = new Request();
         Promise<Response, NeverThrowsException> result = sequence.handle(context, request);
         assertThat(result.get()).isSameAs(response1);
-        verifyZeroInteractions(handler2);
+        verifyNoInteractions(handler2);
     }
 }

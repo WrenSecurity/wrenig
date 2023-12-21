@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2015 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.heap;
@@ -46,7 +47,7 @@ public class GenericHeapletTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         this.heap = buildDefaultHeap();
         router = new Router();
         router.addRoute(RouteMatchers.requestUriMatcher(RoutingMode.EQUALS, ""), Handlers.NO_CONTENT);

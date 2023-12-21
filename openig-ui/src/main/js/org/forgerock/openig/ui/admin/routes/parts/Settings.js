@@ -75,24 +75,24 @@ define([
             event.preventDefault();
             this.settingsPanel.save()
                 .then(
-                () => {
-                    eventManager.sendEvent(
-                        constants.EVENT_DISPLAY_MESSAGE_REQUEST,
-                        {
-                            key: "routeSettingsSaveSuccess",
-                            filter: this.routeData.get("name")
-                        }
-                    );
-                },
-                () => {
-                    eventManager.sendEvent(
-                        constants.EVENT_DISPLAY_MESSAGE_REQUEST,
-                        {
-                            key: "routeSettingsSaveFailed",
-                            filter: this.routeData.get("name")
-                        }
-                    );
-                }
+                    () => {
+                        eventManager.sendEvent(
+                            constants.EVENT_DISPLAY_MESSAGE_REQUEST,
+                            {
+                                key: "routeSettingsSaveSuccess",
+                                filter: this.routeData.get("name")
+                            }
+                        );
+                    },
+                    () => {
+                        eventManager.sendEvent(
+                            constants.EVENT_DISPLAY_MESSAGE_REQUEST,
+                            {
+                                key: "routeSettingsSaveFailed",
+                                filter: this.routeData.get("name")
+                            }
+                        );
+                    }
                 );
         }
 

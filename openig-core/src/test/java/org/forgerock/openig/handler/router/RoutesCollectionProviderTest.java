@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.handler.router;
@@ -23,7 +24,7 @@ import static org.forgerock.json.resource.QueryResponse.NO_COUNT;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import org.forgerock.json.JsonPointer;
@@ -57,7 +58,7 @@ public class RoutesCollectionProviderTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -73,7 +74,7 @@ public class RoutesCollectionProviderTest {
         } catch (ResourceException e) {
             assertThat(e).isInstanceOf(NotSupportedException.class);
         }
-        verifyZeroInteractions(queryResourceHandler);
+        verifyNoInteractions(queryResourceHandler);
     }
 
     @Test
@@ -89,7 +90,7 @@ public class RoutesCollectionProviderTest {
         } catch (ResourceException e) {
             assertThat(e).isInstanceOf(NotSupportedException.class);
         }
-        verifyZeroInteractions(queryResourceHandler);
+        verifyNoInteractions(queryResourceHandler);
     }
 
     @Test
@@ -105,7 +106,7 @@ public class RoutesCollectionProviderTest {
         } catch (ResourceException e) {
             assertThat(e).isInstanceOf(NotSupportedException.class);
         }
-        verifyZeroInteractions(queryResourceHandler);
+        verifyNoInteractions(queryResourceHandler);
     }
 
     @Test

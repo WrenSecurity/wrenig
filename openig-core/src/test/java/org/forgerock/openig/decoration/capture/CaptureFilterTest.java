@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.decoration.capture;
@@ -21,7 +22,7 @@ import static org.forgerock.openig.decoration.capture.CapturePoint.FILTERED_REQU
 import static org.forgerock.openig.decoration.capture.CapturePoint.FILTERED_RESPONSE;
 import static org.forgerock.openig.decoration.capture.CapturePoint.REQUEST;
 import static org.forgerock.openig.decoration.capture.CapturePoint.RESPONSE;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -66,9 +67,9 @@ public class CaptureFilterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         response = new Response(Status.OK);
-        when(terminal.handle(any(Context.class), any(Request.class)))
+        when(terminal.handle(any(), any()))
                 .thenReturn(Promises.<Response, NeverThrowsException>newResultPromise(response));
     }
 

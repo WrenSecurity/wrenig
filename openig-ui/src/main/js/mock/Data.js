@@ -44,7 +44,7 @@ define([
                             "condition": "${request.uri.path == '/legacy'}",
                             "router": "",
                             "route": "",
-                             // Order is as defined by user in "chain"
+                            // Order is as defined by user in "chain"
                             "filters": []
                         },
                         {

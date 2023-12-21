@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.handler.router;
@@ -25,11 +26,11 @@ import static org.forgerock.openig.Files.getRelativeDirectory;
 import static org.forgerock.openig.heap.HeapUtilsTest.buildDefaultHeap;
 import static org.forgerock.openig.http.RunMode.EVALUATION;
 import static org.forgerock.openig.http.RunMode.PRODUCTION;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -84,7 +85,7 @@ public class RouterHandlerTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         routes = getRelativeDirectory(RouterHandlerTest.class, "routes");
         heap = buildDefaultHeap();
         heap.put(Keys.SCHEDULED_EXECUTOR_SERVICE_HEAP_KEY, scheduledExecutorService);
@@ -292,7 +293,7 @@ public class RouterHandlerTest {
                        heap);
         heaplet.destroy();
 
-        verifyZeroInteractions(scheduledExecutorService);
+        verifyNoInteractions(scheduledExecutorService);
     }
 
     private void assertStatusOnUri(Handler router, String uri, Status expected)

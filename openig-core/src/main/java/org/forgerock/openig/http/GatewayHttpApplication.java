@@ -13,6 +13,7 @@
  *
  * Copyright 2010–2011 ApexIdentity Inc.
  * Portions Copyright 2011-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.http;
@@ -44,7 +45,7 @@ import static org.forgerock.openig.util.JsonValues.requiredHeapObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.forgerock.guava.common.base.Ticker;
+import org.wrensecurity.guava.common.base.Ticker;
 import org.forgerock.http.Filter;
 import org.forgerock.http.Handler;
 import org.forgerock.http.HttpApplication;

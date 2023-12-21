@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.decoration.timer;
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import org.forgerock.guava.common.base.Ticker;
+import org.wrensecurity.guava.common.base.Ticker;
 import org.forgerock.http.Filter;
 import org.forgerock.http.Handler;
 import org.forgerock.json.JsonValue;
@@ -57,7 +58,7 @@ public class TimerDecoratorTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         HeapImpl heap = new HeapImpl(Name.of("anonymous"));
         heap.put(TICKER_HEAP_KEY, Ticker.systemTicker());
         when(context.getHeap()).thenReturn(heap);

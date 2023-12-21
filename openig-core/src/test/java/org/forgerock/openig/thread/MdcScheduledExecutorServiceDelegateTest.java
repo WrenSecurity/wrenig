@@ -12,14 +12,18 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.thread;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.any;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 
 import java.util.Collection;
@@ -27,7 +31,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -61,7 +64,7 @@ public class MdcScheduledExecutorServiceDelegateTest extends MdcExecutorServiceD
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Override
@@ -84,7 +87,7 @@ public class MdcScheduledExecutorServiceDelegateTest extends MdcExecutorServiceD
         doReturn(scheduledFuture).when(delegate())
                                  .schedule(any(Runnable.class), eq(1L), eq(TimeUnit.SECONDS));
 
-        assertThat(executorService().schedule(runnable, 1, TimeUnit.SECONDS)).isSameAs(scheduledFuture);
+        assertThat(executorService().schedule(runnable, 1, TimeUnit.SECONDS), is(equalTo(scheduledFuture)));
 
         verify(delegate()).schedule(runnableCapture.capture(), eq(1L), eq(TimeUnit.SECONDS));
         assertThatCapturedRunnableIsMdcAware();
@@ -96,7 +99,7 @@ public class MdcScheduledExecutorServiceDelegateTest extends MdcExecutorServiceD
         doReturn(scheduledFuture).when(delegate())
                                  .schedule(any(Callable.class), eq(1L), eq(TimeUnit.SECONDS));
 
-        assertThat(executorService().schedule(callable, 1, TimeUnit.SECONDS)).isSameAs(scheduledFuture);
+        assertThat(executorService().schedule(callable, 1, TimeUnit.SECONDS), is(equalTo(scheduledFuture)));
 
         verify(delegate()).schedule(callableCapture.capture(), eq(1L), eq(TimeUnit.SECONDS));
         assertThatCaptureCallableIsMdcAware();
@@ -107,7 +110,7 @@ public class MdcScheduledExecutorServiceDelegateTest extends MdcExecutorServiceD
         doReturn(scheduledFuture).when(delegate())
                                  .scheduleAtFixedRate(any(Runnable.class), eq(1L), eq(2L), eq(TimeUnit.SECONDS));
 
-        assertThat(executorService().scheduleAtFixedRate(runnable, 1, 2, TimeUnit.SECONDS)).isSameAs(scheduledFuture);
+        assertThat(executorService().scheduleAtFixedRate(runnable, 1, 2, TimeUnit.SECONDS), is(equalTo(scheduledFuture)));
 
         verify(delegate()).scheduleAtFixedRate(runnableCapture.capture(), eq(1L), eq(2L), eq(TimeUnit.SECONDS));
         assertThatCapturedRunnableIsMdcAware();
@@ -118,20 +121,17 @@ public class MdcScheduledExecutorServiceDelegateTest extends MdcExecutorServiceD
         doReturn(scheduledFuture).when(delegate())
                                  .scheduleWithFixedDelay(any(Runnable.class), eq(1L), eq(2L), eq(TimeUnit.SECONDS));
 
-        assertThat(executorService().scheduleWithFixedDelay(runnable, 1, 2, TimeUnit.SECONDS))
-                .isSameAs(scheduledFuture);
+        assertThat(executorService().scheduleWithFixedDelay(runnable, 1, 2, TimeUnit.SECONDS), is(equalTo(scheduledFuture)));
 
         verify(delegate()).scheduleWithFixedDelay(runnableCapture.capture(), eq(1L), eq(2L), eq(TimeUnit.SECONDS));
         assertThatCapturedRunnableIsMdcAware();
     }
 
     private void assertThatCapturedRunnableIsMdcAware() {
-        assertThat(runnableCapture.getValue())
-                .isInstanceOf(MdcScheduledExecutorServiceDelegate.MdcRunnable.class);
+        assertThat(runnableCapture.getValue(), is(instanceOf(MdcScheduledExecutorServiceDelegate.MdcRunnable.class)));
     }
 
     private void assertThatCaptureCallableIsMdcAware() {
-        assertThat(callableCapture.getValue())
-                .isInstanceOf(MdcScheduledExecutorServiceDelegate.MdcCallable.class);
+        assertThat(callableCapture.getValue(), is(instanceOf(MdcScheduledExecutorServiceDelegate.MdcCallable.class)));
     }
 }

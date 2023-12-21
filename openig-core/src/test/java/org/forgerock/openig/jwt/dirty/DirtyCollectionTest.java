@@ -12,18 +12,19 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2015 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.jwt.dirty;
 
 import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
@@ -41,7 +42,7 @@ public class DirtyCollectionTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         collection = new DirtyCollection<>(new HashSet<>(asList("one", "two", "three")), listener);
     }
 
@@ -65,7 +66,7 @@ public class DirtyCollectionTest {
     public void shouldNotNotifyListenerWhenRemoveAllIsCalledWithNoActualChanges() throws Exception {
         collection.removeAll(Arrays.asList("four"));
 
-        verifyZeroInteractions(listener);
+        verifyNoInteractions(listener);
         assertThat(collection).containsOnly("one", "two", "three");
     }
 
@@ -89,7 +90,7 @@ public class DirtyCollectionTest {
     public void shouldNotNotifyListenerWhenRetainAllIsCalledWithNoChanges() throws Exception {
         collection.retainAll(Arrays.asList("one", "two", "three"));
 
-        verifyZeroInteractions(listener);
+        verifyNoInteractions(listener);
         assertThat(collection).containsOnly("one", "two", "three");
     }
 
@@ -109,7 +110,7 @@ public class DirtyCollectionTest {
         collection.iterator();
         collection.size();
         collection.toArray();
-        collection.toArray(null);
+        collection.toArray(new String[0]);
 
         verify(delegate).clear();
         verify(delegate).isEmpty();
@@ -123,6 +124,6 @@ public class DirtyCollectionTest {
         verify(delegate).iterator();
         verify(delegate).size();
         verify(delegate).toArray();
-        verify(delegate).toArray(null);
+        verify(delegate).toArray(new String[0]);
     }
 }

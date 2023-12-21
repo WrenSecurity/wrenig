@@ -37,7 +37,8 @@ public class KeyStoreHeapletTest {
 
         JsonValue config = json(object(
                 field("url", resource("/keypair-keystore.jks")),
-                field("password", "changeit")
+                field("password", "changeit"),
+                field("type", "JKS")
         ));
         KeyStoreHeaplet heaplet = new KeyStoreHeaplet();
         KeyStore store = (KeyStore) heaplet.create(Name.of(getClass().getName()), config, buildDefaultHeap());

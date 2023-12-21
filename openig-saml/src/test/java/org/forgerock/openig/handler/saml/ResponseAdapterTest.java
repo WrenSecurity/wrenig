@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.handler.saml;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mockito.Mock;
@@ -43,7 +45,7 @@ public class ResponseAdapterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(delegate.getWriter()).thenThrow(new IOException("can't use delegate.getWriter()"));
 
         stream = new ByteArrayOutputStream();
@@ -51,6 +53,15 @@ public class ResponseAdapterTest {
             @Override
             public void write(final int b) throws IOException {
                 stream.write(b);
+            }
+
+            @Override
+            public boolean isReady() {
+                return true;
+            }
+
+            @Override
+            public void setWriteListener(WriteListener writeListener) {
             }
         });
         when(delegate.getOutputStream()).thenReturn(servletStream);

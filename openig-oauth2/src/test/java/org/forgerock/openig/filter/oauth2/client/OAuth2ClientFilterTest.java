@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 package org.forgerock.openig.filter.oauth2.client;
 
@@ -47,13 +48,13 @@ import static org.forgerock.openig.filter.oauth2.client.OAuth2TestUtils.buildCli
 import static org.forgerock.openig.filter.oauth2.client.OAuth2TestUtils.buildClientRegistrationWithScopes;
 import static org.forgerock.openig.filter.oauth2.client.OAuth2TestUtils.newSession;
 import static org.forgerock.util.time.Duration.duration;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -86,6 +87,7 @@ import org.forgerock.util.promise.Promises;
 import org.forgerock.util.time.Duration;
 import org.forgerock.util.time.TimeService;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -121,7 +123,7 @@ public class OAuth2ClientFilterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
         attributesContext = new AttributesContext(new RootContext());
         sessionContext = new SessionContext(attributesContext, newSession());
         registrations = new ClientRegistrationRepository();
@@ -209,7 +211,7 @@ public class OAuth2ClientFilterTest {
         // Then
         verify(discoveryAndDynamicRegistrationChain).handle(eq(context), eq(request));
         assertThat(response.getStatus()).isEqualTo(TEAPOT);
-        verifyZeroInteractions(failureHandler, loginHandler, next, registrationHandler);
+        verifyNoInteractions(failureHandler, loginHandler, next, registrationHandler);
     }
 
     /************************************************************************************************************/
@@ -248,7 +250,7 @@ public class OAuth2ClientFilterTest {
         verify(failureHandler).handle(eq(context), eq(request));
         assertThatExceptionAttributeIsSet();
         assertThat(response.getStatus()).isEqualTo(failureResponse.getStatus());
-        verifyZeroInteractions(discoveryAndDynamicRegistrationChain, loginHandler, next, registrationHandler);
+        verifyNoInteractions(discoveryAndDynamicRegistrationChain, loginHandler, next, registrationHandler);
     }
 
     @Test
@@ -264,7 +266,7 @@ public class OAuth2ClientFilterTest {
         assertThat(response.getStatus()).isEqualTo(failureResponse.getStatus());
         verify(failureHandler).handle(eq(context), eq(request));
         assertThatExceptionAttributeIsSet();
-        verifyZeroInteractions(discoveryAndDynamicRegistrationChain, loginHandler, next, registrationHandler);
+        verifyNoInteractions(discoveryAndDynamicRegistrationChain, loginHandler, next, registrationHandler);
     }
 
     @Test
@@ -278,7 +280,7 @@ public class OAuth2ClientFilterTest {
 
         // Then
         assertThatAuthorizationRedirectHandlerProducesRedirect(response);
-        verifyZeroInteractions(discoveryAndDynamicRegistrationChain, failureHandler, loginHandler, next,
+        verifyNoInteractions(discoveryAndDynamicRegistrationChain, failureHandler, loginHandler, next,
                                registrationHandler);
     }
 
@@ -309,7 +311,7 @@ public class OAuth2ClientFilterTest {
         verify(failureHandler).handle(eq(context), eq(request));
         assertThatExceptionAttributeIsSet();
         assertThat(response.getStatus()).isEqualTo(failureResponse.getStatus());
-        verifyZeroInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
+        verifyNoInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
     }
 
     @DataProvider
@@ -337,7 +339,7 @@ public class OAuth2ClientFilterTest {
         verify(failureHandler).handle(eq(context), eq(request));
         assertThatExceptionAttributeIsSet();
         assertThat(response.getStatus()).isEqualTo(failureResponse.getStatus());
-        verifyZeroInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
+        verifyNoInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
     }
 
     @Test
@@ -353,7 +355,7 @@ public class OAuth2ClientFilterTest {
         verify(failureHandler).handle(eq(context), eq(request));
         assertThatExceptionAttributeIsSet();
         assertThat(response.getStatus()).isEqualTo(failureResponse.getStatus());
-        verifyZeroInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
+        verifyNoInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
     }
 
     @Test
@@ -370,7 +372,7 @@ public class OAuth2ClientFilterTest {
         verify(failureHandler).handle(eq(context), eq(request));
         assertThatExceptionAttributeIsSet();
         assertThat(response.getStatus()).isEqualTo(failureResponse.getStatus());
-        verifyZeroInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
+        verifyNoInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
     }
 
     @Test
@@ -387,7 +389,7 @@ public class OAuth2ClientFilterTest {
         verify(failureHandler).handle(eq(context), eq(request));
         assertThatExceptionAttributeIsSet();
         assertThat(response.getStatus()).isEqualTo(failureResponse.getStatus());
-        verifyZeroInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
+        verifyNoInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
     }
 
     @Test
@@ -404,7 +406,7 @@ public class OAuth2ClientFilterTest {
         verify(failureHandler).handle(eq(context), eq(request));
         assertThatExceptionAttributeIsSet();
         assertThat(response.getStatus()).isEqualTo(failureResponse.getStatus());
-        verifyZeroInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
+        verifyNoInteractions(next, discoveryAndDynamicRegistrationChain, registrationHandler);
     }
 
     @Test
@@ -428,7 +430,7 @@ public class OAuth2ClientFilterTest {
         assertThat(response.getStatus()).isEqualTo(FOUND);
         assertThat(response.getHeaders().getFirst("Location")).isEqualTo("redirectUri");
         verify(registrationHandler).handle(eq(context), any(Request.class));
-        verifyZeroInteractions(next, failureHandler, discoveryAndDynamicRegistrationChain);
+        verifyNoInteractions(next, failureHandler, discoveryAndDynamicRegistrationChain);
     }
 
     /************************************************************************************************************/
@@ -456,7 +458,7 @@ public class OAuth2ClientFilterTest {
         // Then
         assertThat(response.getStatus()).isEqualTo(OK);
         assertThatSessionIsEmpty();
-        verifyZeroInteractions(discoveryAndDynamicRegistrationChain, failureHandler, loginHandler, next,
+        verifyNoInteractions(discoveryAndDynamicRegistrationChain, failureHandler, loginHandler, next,
                                registrationHandler);
     }
 
@@ -473,7 +475,7 @@ public class OAuth2ClientFilterTest {
         assertThat(response.getStatus()).isEqualTo(FOUND);
         assertThat(response.getHeaders().getFirst("Location")).isEqualTo("www.forgerock.com");
         assertThatSessionIsEmpty();
-        verifyZeroInteractions(discoveryAndDynamicRegistrationChain, failureHandler, loginHandler, next,
+        verifyNoInteractions(discoveryAndDynamicRegistrationChain, failureHandler, loginHandler, next,
                                registrationHandler);
     }
 
@@ -495,7 +497,7 @@ public class OAuth2ClientFilterTest {
         assertThatExceptionAttributeIsSet();
         assertThat(response.getStatus()).isEqualTo(failureResponse.getStatus());
         assertThatSessionIsEmpty();
-        verifyZeroInteractions(discoveryAndDynamicRegistrationChain, loginHandler, next, registrationHandler);
+        verifyNoInteractions(discoveryAndDynamicRegistrationChain, loginHandler, next, registrationHandler);
     }
 
     /************************************************************************************************************/
@@ -523,7 +525,7 @@ public class OAuth2ClientFilterTest {
 
         // Then
         assertThatAuthorizationRedirectHandlerProducesRedirect(response);
-        verifyZeroInteractions(next, failureHandler, discoveryAndDynamicRegistrationChain, registrationHandler);
+        verifyNoInteractions(next, failureHandler, discoveryAndDynamicRegistrationChain, registrationHandler);
     }
 
     @Test
@@ -542,7 +544,7 @@ public class OAuth2ClientFilterTest {
         assertThat(response.getStatus()).isEqualTo(OK);
         assertThatTargetAttributesAreSet();
         verify(next).handle(eq(context), any(Request.class));
-        verifyZeroInteractions(failureHandler, discoveryAndDynamicRegistrationChain, registrationHandler);
+        verifyNoInteractions(failureHandler, discoveryAndDynamicRegistrationChain, registrationHandler);
     }
 
     @Test
@@ -575,7 +577,7 @@ public class OAuth2ClientFilterTest {
         assertThat(response.getStatus()).isEqualTo(OK);
         verify(next, times(2)).handle(eq(context), any(Request.class));
         verify(registrationHandler).handle(eq(context), any(Request.class));
-        verifyZeroInteractions(failureHandler, discoveryAndDynamicRegistrationChain);
+        verifyNoInteractions(failureHandler, discoveryAndDynamicRegistrationChain);
     }
 
     @Test
@@ -608,7 +610,7 @@ public class OAuth2ClientFilterTest {
         assertThat(response.getStatus()).isEqualTo(UNAUTHORIZED);
         verify(next, times(2)).handle(eq(context), any(Request.class));
         verify(registrationHandler).handle(eq(context), any(Request.class));
-        verifyZeroInteractions(failureHandler, discoveryAndDynamicRegistrationChain);
+        verifyNoInteractions(failureHandler, discoveryAndDynamicRegistrationChain);
     }
 
     @Test
@@ -639,7 +641,7 @@ public class OAuth2ClientFilterTest {
         verify(next).handle(eq(context), any(Request.class));
         verify(registrationHandler).handle(eq(context), any(Request.class));
         assertThatTargetAttributesAreSet();
-        verifyZeroInteractions(discoveryAndDynamicRegistrationChain);
+        verifyNoInteractions(discoveryAndDynamicRegistrationChain);
     }
 
     /**
@@ -682,7 +684,7 @@ public class OAuth2ClientFilterTest {
         assertThat(finalResponse.getStatus()).isEqualTo(response.getStatus());
         verify(next).handle(eq(context), any(Request.class));
         assertThatTargetAttributesAreSet();
-        verifyZeroInteractions(failureHandler, discoveryAndDynamicRegistrationChain, registrationHandler);
+        verifyNoInteractions(failureHandler, discoveryAndDynamicRegistrationChain, registrationHandler);
     }
 
     /**
@@ -721,7 +723,7 @@ public class OAuth2ClientFilterTest {
         assertThat(finalResponse.getStatus()).isEqualTo(failureResponse.getStatus());
         verify(next).handle(eq(context), any(Request.class));
         assertThatTargetAttributesAreSet();
-        verifyZeroInteractions(discoveryAndDynamicRegistrationChain, registrationHandler);
+        verifyNoInteractions(discoveryAndDynamicRegistrationChain, registrationHandler);
     }
 
     /*
@@ -772,7 +774,7 @@ public class OAuth2ClientFilterTest {
         assertThatTargetAttributesAreSetAndContain(null, null, singletonMap("email", "janedoe@example.com"));
         verify(next).handle(eq(context), any(Request.class));
         verify(registrationHandler).handle(eq(context), any(Request.class));
-        verifyZeroInteractions(failureHandler, discoveryAndDynamicRegistrationChain);
+        verifyNoInteractions(failureHandler, discoveryAndDynamicRegistrationChain);
     }
 
     @Test
@@ -806,7 +808,7 @@ public class OAuth2ClientFilterTest {
                                                    NEW_REFRESH_TOKEN, singletonMap("email", "janedoe@example.com"));
         verify(next).handle(eq(context), any(Request.class));
         verify(registrationHandler, times(3)).handle(eq(context), any(Request.class));
-        verifyZeroInteractions(failureHandler, discoveryAndDynamicRegistrationChain);
+        verifyNoInteractions(failureHandler, discoveryAndDynamicRegistrationChain);
     }
 
     @Test
@@ -833,7 +835,7 @@ public class OAuth2ClientFilterTest {
         assertThatExceptionAttributeIsSet();
         assertThat(response.getStatus()).isEqualTo(failureResponse.getStatus());
         verify(registrationHandler, times(2)).handle(eq(context), any(Request.class));
-        verifyZeroInteractions(discoveryAndDynamicRegistrationChain, next);
+        verifyNoInteractions(discoveryAndDynamicRegistrationChain, next);
     }
 
 

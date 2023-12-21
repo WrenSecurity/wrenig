@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2015-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 package org.forgerock.openig.filter.oauth2.client;
 
@@ -25,7 +26,6 @@ import static org.forgerock.json.JsonValue.object;
 import static org.forgerock.openig.filter.oauth2.client.OAuth2TestUtils.newSession;
 import static org.forgerock.openig.util.StringUtil.join;
 import static org.mockito.Mockito.mock;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.net.URI;
 import java.util.Collections;
@@ -42,6 +42,7 @@ import org.forgerock.services.context.Context;
 import org.forgerock.services.context.RootContext;
 import org.forgerock.util.time.TimeService;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -62,7 +63,7 @@ public class AuthorizationRedirectHandlerTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
         sessionContext = new SessionContext(new RootContext(), newSession());
         attributesContext = new AttributesContext(sessionContext);
         context = new UriRouterContext(attributesContext,

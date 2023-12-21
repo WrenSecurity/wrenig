@@ -34,7 +34,7 @@ define([
     validatorsManager,
     RoutesUtils,
     FormUtils
-    ) => (
+) => (
     AbstractRouteView.extend({
         template: "templates/openig/admin/routes/parts/Authorization.html",
         partials: [
@@ -184,11 +184,11 @@ define([
                 const form = this.$el.find(`#${this.data.formId}`)[0];
                 FormUtils.isFormValid(form)
                     .done(
-                    () => {
-                        this.data.authZFilter.enabled = newState;
-                        this.data.routeData.setFilter(this.data.authZFilter, this.filterCondition);
-                        this.data.routeData.save();
-                    });
+                        () => {
+                            this.data.authZFilter.enabled = newState;
+                            this.data.routeData.setFilter(this.data.authZFilter, this.filterCondition);
+                            this.data.routeData.save();
+                        });
             }
             this.setFormFooterVisibility(newState);
         },
@@ -198,29 +198,29 @@ define([
             const form = this.$el.find(`#${this.data.formId}`)[0];
             FormUtils.isFormValid(form)
                 .done(
-                () => {
-                    const formVal = form2js(form, ".", false, FormUtils.convertToJSTypes);
-                    _.extend(this.data.authZFilter, formVal);
-                    if (!this.getFilter()) {
-                        RoutesUtils.addFilterIntoModel(this.data.routeData, this.data.authZFilter);
-                    }
-                    this.data.routeData.setFilter(this.data.authZFilter, this.filterCondition);
-                    this.data.routeData.save()
-                        .then(
-                            () => {
-                                const submit = this.$el.find(".js-save-btn");
-                                submit.attr("disabled", true);
-                                this.showNotification(this.NOTIFICATION_TYPE.SaveSuccess);
-                            },
-                            () => {
-                                this.showNotification(this.NOTIFICATION_TYPE.SaveFailed);
-                            }
-                        );
-                })
+                    () => {
+                        const formVal = form2js(form, ".", false, FormUtils.convertToJSTypes);
+                        _.extend(this.data.authZFilter, formVal);
+                        if (!this.getFilter()) {
+                            RoutesUtils.addFilterIntoModel(this.data.routeData, this.data.authZFilter);
+                        }
+                        this.data.routeData.setFilter(this.data.authZFilter, this.filterCondition);
+                        this.data.routeData.save()
+                            .then(
+                                () => {
+                                    const submit = this.$el.find(".js-save-btn");
+                                    submit.attr("disabled", true);
+                                    this.showNotification(this.NOTIFICATION_TYPE.SaveSuccess);
+                                },
+                                () => {
+                                    this.showNotification(this.NOTIFICATION_TYPE.SaveFailed);
+                                }
+                            );
+                    })
                 .fail(
-                () => {
-                    $(form).find("input").trigger("validate");
-                });
+                    () => {
+                        $(form).find("input").trigger("validate");
+                    });
         },
 
         getFilter () {

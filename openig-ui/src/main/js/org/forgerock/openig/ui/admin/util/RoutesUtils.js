@@ -27,9 +27,8 @@ define([
     "org/forgerock/openig/ui/admin/services/TransformService",
     "org/forgerock/commons/ui/common/main/Router",
     "org/forgerock/openig/ui/common/util/Clipboard",
-    "codemirror",
-    // codemirror's dependency for ld+json mode
-    "codemirror/mode/javascript/javascript"
+    "libs/codemirror/lib/codemirror",
+    "libs/codemirror/mode/javascript/javascript"
 ], (
     $,
     _,
@@ -320,7 +319,7 @@ define([
                                     );
                                     deferred.reject();
                                 }
-                            );
+                                );
                         } else {
                             this.deleteRoute(id, title)
                                 .then(

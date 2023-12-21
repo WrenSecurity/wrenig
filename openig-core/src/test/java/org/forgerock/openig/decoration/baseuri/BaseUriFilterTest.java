@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2015-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.decoration.baseuri;
@@ -19,7 +20,6 @@ package org.forgerock.openig.decoration.baseuri;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.forgerock.http.protocol.Status.INTERNAL_SERVER_ERROR;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.net.URISyntaxException;
 
@@ -30,6 +30,7 @@ import org.forgerock.openig.el.Expression;
 import org.forgerock.services.context.Context;
 import org.forgerock.services.context.RootContext;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeMethod;
@@ -49,7 +50,7 @@ public class BaseUriFilterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
         context = new RootContext();
         logger = LoggerFactory.getLogger("decoratedObjectName");
     }

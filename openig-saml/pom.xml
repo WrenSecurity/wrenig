@@ -1,86 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  The contents of this file are subject to the terms of the Common Development and
-  Distribution License (the License). You may not use this file except in compliance with the
-  License.
+    The contents of this file are subject to the terms of the Common Development and
+    Distribution License (the License). You may not use this file except in compliance with the
+    License.
 
-  You can obtain a copy of the License at legal/CDDLv1.0.txt. See the License for the
-  specific language governing permission and limitations under the License.
+    You can obtain a copy of the License at legal/CDDLv1.0.txt. See the License for the
+    specific language governing permission and limitations under the License.
 
-  When distributing Covered Software, include this CDDL Header Notice in each file and include
-  the License file at legal/CDDLv1.0.txt. If applicable, add the following below the CDDL
-  Header, with the fields enclosed by brackets [] replaced by your own identifying
-  information: "Portions Copyright [year] [name of copyright owner]".
+    When distributing Covered Software, include this CDDL Header Notice in each file and include
+    the License file at legal/CDDLv1.0.txt. If applicable, add the following below the CDDL
+    Header, with the fields enclosed by brackets [] replaced by your own identifying
+    information: "Portions Copyright [year] [name of copyright owner]".
 
-  Copyright 2010-2011 ApexIdentity Inc.
-  Portions Copyright 2011-2016 ForgeRock AS.
+    Copyright 2010-2011 ApexIdentity Inc.
+    Portions Copyright 2011-2016 ForgeRock AS.
+    Portions Copyright 2023 Wren Security.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.forgerock.openig</groupId>
-    <artifactId>openig-project</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
-  </parent>
-  <artifactId>openig-saml</artifactId>
-  <name>OpenIG SAML Support</name>
-  <properties>
-    <openam.version>14.0.0-M5</openam.version>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.forgerock.openig</groupId>
-      <artifactId>openig-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.forgerock.openam</groupId>
-      <artifactId>openam-shared</artifactId>
-      <version>${openam.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.testng</groupId>
-          <artifactId>testng</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.assertj</groupId>
-          <artifactId>assertj-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.mockito</groupId>
-          <artifactId>mockito-all</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.forgerock.openam</groupId>
-      <artifactId>openam-federation-library</artifactId>
-      <version>${openam.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-nop</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.wrensecurity.wrenig</groupId>
+        <artifactId>openig-project</artifactId>
+        <version>5.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>openig-saml</artifactId>
+
+    <name>Wren:IG - SAML</name>
+
+    <properties>
+        <wrenam.version>15.0.0</wrenam.version>
+        <saaj-impl.version>1.5.3</saaj-impl.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wrensecurity.wrenam</groupId>
+            <artifactId>openam-shared</artifactId>
+            <version>${wrenam.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.testng</groupId>
+                    <artifactId>testng</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.assertj</groupId>
+                    <artifactId>assertj-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wrensecurity.wrenam</groupId>
+            <artifactId>openam-federation-library</artifactId>
+            <version>${wrenam.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wrensecurity.wrenig</groupId>
+            <artifactId>openig-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Test dependencies -->
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Override version managed by jaxrp-impl -->
+        <dependency>
+            <groupId>com.sun.xml.messaging.saaj</groupId>
+            <artifactId>saaj-impl</artifactId>
+            <version>${saaj-impl.version}</version>
+        </dependency>
+    </dependencies>
 </project>

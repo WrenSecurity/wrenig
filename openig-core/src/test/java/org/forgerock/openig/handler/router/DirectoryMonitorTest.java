@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 
 package org.forgerock.openig.handler.router;
@@ -25,16 +26,17 @@ import static org.forgerock.json.JsonValue.field;
 import static org.forgerock.json.JsonValue.json;
 import static org.forgerock.json.JsonValue.object;
 import static org.forgerock.openig.Files.getRelativeDirectory;
-import static org.mockito.Matchers.same;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static org.testng.reporters.Files.writeFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -52,7 +54,7 @@ public class DirectoryMonitorTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -120,7 +122,7 @@ public class DirectoryMonitorTest {
 
         observer.monitor(listener);
 
-        verifyZeroInteractions(listener);
+        verifyNoInteractions(listener);
     }
 
     @Test
@@ -167,7 +169,7 @@ public class DirectoryMonitorTest {
     @Test
     public void testDeleteArtifact() throws Exception {
         File folder = newTemporaryFolder();
-        writeFile("{ \"foo\": \"bar\" }", new File(folder, "foo.json"));
+        Files.write(Paths.get(folder.getAbsolutePath(), "foo.json"), "{ \"foo\": \"bar\" }".getBytes());
         DirectoryMonitor directoryMonitor = new DirectoryMonitor(folder);
 
         directoryMonitor.delete("foo");

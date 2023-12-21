@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 package org.forgerock.openig.filter;
 
@@ -19,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.forgerock.http.protocol.Status.OK;
 import static org.forgerock.openig.filter.RequestCopyFilter.requestCopyFilter;
 import static org.forgerock.util.promise.Promises.newResultPromise;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.net.URISyntaxException;
 
@@ -30,6 +30,7 @@ import org.forgerock.services.context.Context;
 import org.forgerock.services.context.RootContext;
 import org.forgerock.util.promise.NeverThrowsException;
 import org.forgerock.util.promise.Promise;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -46,7 +47,7 @@ public class RequestCopyFilterTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         context = new RootContext();
         handler = new TerminalHandler();

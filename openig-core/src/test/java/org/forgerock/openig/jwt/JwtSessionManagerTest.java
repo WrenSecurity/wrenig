@@ -12,14 +12,15 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2015-2016 ForgeRock AS.
+ * Portions Copyright 2023 Wren Security.
  */
 package org.forgerock.openig.jwt;
 
-import static org.mockito.Matchers.same;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 import java.nio.charset.StandardCharsets;
 
@@ -28,6 +29,7 @@ import org.forgerock.http.protocol.Status;
 import org.forgerock.http.session.Session;
 import org.forgerock.json.jose.jws.handlers.HmacSigningHandler;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -44,7 +46,7 @@ public class JwtSessionManagerTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        initMocks(this);
+        MockitoAnnotations.openMocks(this);
         manager = new JwtSessionManager(null, null, null, null, null, SIGNING_HANDLER);
         session = mock(Session.class);
     }
@@ -59,6 +61,6 @@ public class JwtSessionManagerTest {
     @Test
     public void shouldNotSaveSession() throws Exception {
         manager.save(session, null);
-        verifyZeroInteractions(session);
+        verifyNoInteractions(session);
     }
 }
