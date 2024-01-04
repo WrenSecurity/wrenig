@@ -13,7 +13,7 @@
     information: "Portions copyright [year] [name of copyright owner]".
 
     Copyright 2014-2016 ForgeRock AS.
-    Portions Copyright 2023 Wren Security.
+    Portions Copyright 2023-2024 Wren Security.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -29,85 +29,72 @@
     <name>Wren:IG - User Interface</name>
 
     <properties>
-        <wrensec-ui.version>22.1.2</wrensec-ui.version>
-        <node.install.directory>${project.basedir}</node.install.directory>
+        <wrensec-ui.version>23.0.0-RC2</wrensec-ui.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.forgerock.commons.ui</groupId>
-                <artifactId>forgerock-ui</artifactId>
-                <version>${wrensec-ui.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
-            <groupId>org.forgerock.commons.ui</groupId>
-            <artifactId>forgerock-ui-commons</artifactId>
+            <groupId>org.wrensecurity.commons</groupId>
+            <artifactId>wrensec-ui-commons</artifactId>
             <version>${wrensec-ui.version}</version>
             <type>zip</type>
-            <classifier>www</classifier>
+            <classifier>base</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wrensecurity.commons</groupId>
+            <artifactId>wrensec-ui-commons</artifactId>
+            <version>${wrensec-ui.version}</version>
+            <type>zip</type>
+            <classifier>build</classifier>
         </dependency>
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>${basedir}/src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-            <resource>
-                <directory>${basedir}/src/main/js</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-
         <outputDirectory>${project.build.directory}/www</outputDirectory>
 
         <plugins>
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.12.0</version>
+                <version>1.14.2</version>
+
                 <configuration>
-                    <installDirectory>${node.install.directory}</installDirectory>
+                    <installDirectory>${project.basedir}</installDirectory>
+                    <nodeVersion>v20.10.0</nodeVersion>
+                    <npmVersion>10.2.5</npmVersion>
+                    <nodeDownloadRoot>https://nodejs.org/dist/</nodeDownloadRoot>
+                    <npmDownloadRoot>https://wrensecurity.jfrog.io/artifactory/api/npm/npm-virtual/npm/-/</npmDownloadRoot>
                 </configuration>
+
                 <executions>
                     <execution>
                         <id>install-node-and-npm</id>
+                        <phase>initialize</phase>
+
                         <goals>
                             <goal>install-node-and-npm</goal>
                         </goals>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <nodeVersion>v20.10.0</nodeVersion>
-                            <npmVersion>10.2.5</npmVersion>
-                            <npmDownloadRoot>https://wrensecurity.jfrog.io/artifactory/api/npm/npm-virtual/npm/-/</npmDownloadRoot>
-                        </configuration>
                     </execution>
+
                     <execution>
-                        <id>npm-install</id>
+                        <id>npm install</id>
+
                         <goals>
                             <goal>npm</goal>
                         </goals>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
                     </execution>
+
                     <execution>
-                        <id>grunt</id>
+                        <id>npm build</id>
+                        <phase>process-resources</phase>
+
                         <goals>
-                            <goal>grunt</goal>
+                            <goal>npm</goal>
                         </goals>
-                        <phase>compile</phase>
+
                         <configuration>
-                            <arguments>build</arguments>
+                            <arguments>run build</arguments>
                         </configuration>
                     </execution>
                 </executions>
@@ -116,56 +103,36 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+
                 <executions>
                     <execution>
                         <id>unpack</id>
-                        <phase>process-resources</phase>
+                        <phase>initialize</phase>
+
                         <goals>
                             <goal>unpack</goal>
                         </goals>
+
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.forgerock.commons.ui</groupId>
-                                    <artifactId>forgerock-ui-commons</artifactId>
-                                    <version>${forgerock-ui.version}</version>
+                                    <groupId>org.wrensecurity.commons</groupId>
+                                    <artifactId>wrensec-ui-commons</artifactId>
+                                    <version>${wrensec-ui.version}</version>
                                     <type>zip</type>
-                                    <classifier>www</classifier>
+                                    <classifier>base</classifier>
+                                    <outputDirectory>${project.build.directory}/ui-compose</outputDirectory>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.wrensecurity.commons</groupId>
+                                    <artifactId>wrensec-ui-commons</artifactId>
+                                    <version>${wrensec-ui.version}</version>
+                                    <type>zip</type>
+                                    <classifier>build</classifier>
+                                    <outputDirectory>${project.build.directory}/ui-libs</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>${project.build.directory}/compose</outputDirectory>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>copy-dependencies-less</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeArtifactIds>less</includeArtifactIds>
-                            <includeTypes>js</includeTypes>
-                            <outputDirectory>${project.build.directory}/less</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>false</overWriteSnapshots>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>copy-dependencies-r</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeArtifactIds>r</includeArtifactIds>
-                            <includeTypes>js</includeTypes>
-                            <outputDirectory>${project.build.directory}/optimization</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>false</overWriteSnapshots>
-                            <overWriteIfNewer>true</overWriteIfNewer>
                         </configuration>
                     </execution>
                 </executions>

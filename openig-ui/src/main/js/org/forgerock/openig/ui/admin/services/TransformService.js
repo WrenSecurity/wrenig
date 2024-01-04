@@ -87,7 +87,7 @@ define([
     },
 
     pickNonEmpty (filter, values) {
-        return _.omit(_.pick(filter, values), _.isEmpty);
+        return _.omitBy(_.pick(filter, values), _.isEmpty);
     },
 
     singleSignOnFilter (filter) {

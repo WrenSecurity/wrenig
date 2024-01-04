@@ -16,11 +16,10 @@
  */
 
 require.config({
+    baseUrl: "../www",
     map: {
         "*": {
-            "Footer": "org/forgerock/openig/ui/common/components/Footer",
-            "ThemeManager": "org/forgerock/openig/ui/common/util/ThemeManager",
-            "NavigationFilter": "org/forgerock/commons/ui/common/components/navigation/filters/RoleFilter"
+            "ThemeManager": "org/forgerock/openig/ui/common/util/ThemeManager"
         }
     },
     paths: {
@@ -50,7 +49,6 @@ require.config({
         dimple: "libs/dimple",
         underscore : "libs/underscore"
     },
-
     shim: {
         sinon: {
             exports: "sinon"
@@ -121,44 +119,15 @@ require.config({
 });
 
 require([
-    // This list should be all of the things that you either need to use to initialize
-    // prior to starting, or should be the modules that you want included in the minified
-    // startup bundle. Be sure to only put things in this list that you really need to have
-    // loaded on startup (so that you get the benefit of minification without adding more
-    // than you really need for the first load)
-
-    // These are used prior to initialization. Note that the callback function names
-    // these as arguments, but ignores the others.
-    "org/forgerock/commons/ui/common/main/EventManager",
-    "org/forgerock/commons/ui/common/util/Constants",
-    "org/forgerock/commons/ui/common/main/Configuration",
-
-    "backbone",
-
-    // core forgerock-ui files
-    "org/forgerock/commons/ui/common/main",
-
-    // files that are necessary for rendering the login page for forgerock-ui-openig
-    "org/forgerock/openig/ui/main",
-    "config/main",
-
-    // libraries necessary for forgerock-ui (and thus worth bundling)
+    "org/forgerock/openig/ui/common/main/MockServer",
     "jquery",
-    "lodash",
-    "handlebars",
-    "i18next",
-    "spin"
-], (
-    EventManager,
-    Constants,
-    Configuration,
-    Backbone
-) => {
-    // Setup studio user; user is needed for common ui components
-    const studioUser = new Backbone.Model({
-        userName: Constants.studioUser
-    });
-    Configuration.loggedUser = studioUser;
+    "bootstrap"
+], (MockServer, $) => {
 
-    EventManager.sendEvent(Constants.EVENT_DEPENDENCIES_LOADED);
+    $("head", document).append("<base href='../www/' />");
+
+    require(["main", "../test/run"], (appMain, run) => {
+        run(MockServer.instance);
+    });
+
 });

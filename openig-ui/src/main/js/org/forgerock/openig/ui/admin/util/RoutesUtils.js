@@ -57,7 +57,7 @@ define([
 
     checkName (name) {
         return RoutesCollection.availableRoutes().then((routes) => {
-            const foundRoute = routes.findWhere({ name });
+            const foundRoute = routes.find({ name });
             return foundRoute ? "templates.routes.duplicateNameError" : "";
         });
     },
