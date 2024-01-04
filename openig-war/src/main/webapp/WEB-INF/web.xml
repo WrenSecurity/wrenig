@@ -14,11 +14,12 @@
 
   Copyright 2010-2011 ApexIdentity Inc.
   Portions Copyright 2011-2016 ForgeRock AS.
+  Portions Copyright 2024 Wren Security.
 -->
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
-  <display-name>ForgeRock OpenIG</display-name>
+  <display-name>Wren Security Wren:IG</display-name>
 
 </web-app>
