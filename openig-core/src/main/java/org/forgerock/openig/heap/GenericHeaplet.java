@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A generic base class for heaplets with automatically injected fields.
  * <p>
- * If the object created is an instance of {@link GenericHeapObject}, it is then
+ * If the object created is an instance of {@link GenericHeaplet}, it is then
  * automatically injected with {@code logger} and {@code storage} objects.
  */
 public abstract class GenericHeaplet implements Heaplet {

@@ -25,7 +25,6 @@ import org.forgerock.util.promise.Promise;
 
 /**
  * This is an implementation of the {@link AsyncFunction} based on the evaluation of an {@link Expression}.
- * @param <V>
  */
 public class ExpressionRequestAsyncFunction<V> implements AsyncFunction<ContextAndRequest, V, Exception> {
 

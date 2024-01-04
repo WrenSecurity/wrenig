@@ -48,18 +48,16 @@ public class ConditionalFilter implements Filter {
      * This constructor is provided as an ease to write some code : since you have access to the boolean,
      * you may optimise the code like this :
      * <pre>
-     *     {@code
      * if (condition) {
      *    return delegate;
      * } else {
      *    return new Filter() {
-     *       @Override
-     *       public Promise<Response, NeverThrowsException> filter(Context context, Request request, Handler handler) {
+     *       &#64;Override
+     *       public Promise&lt;Response, NeverThrowsException&gt; filter(Context context, Request request, Handler handler) {
      *          return handler.handle(context, request);
      *       }
      *    };
      * }
-     *     }
      * </pre>
      *
      * @param delegate

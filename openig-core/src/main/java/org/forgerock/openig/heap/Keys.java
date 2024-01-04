@@ -100,7 +100,7 @@ public final class Keys {
     public static final String SESSION_FACTORY_HEAP_KEY = "Session";
 
     /**
-     * Key to retrieve an implementation of a {@link org.forgerock.util.Factory<org.forgerock.http.io.Buffer>} instance
+     * Key to retrieve an implementation of a {@link org.forgerock.util.Factory} instance
      * from the {@link org.forgerock.openig.heap.Heap}.
      */
     public static final String TEMPORARY_STORAGE_HEAP_KEY = "TemporaryStorage";
