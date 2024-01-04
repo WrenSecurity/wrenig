@@ -35,7 +35,7 @@
         <groovy.version>2.4.6</groovy.version>
         <h2.version>2.2.224</h2.version>
         <juel.version>2.2.7</juel.version>
-        <logback.version>1.1.7</logback.version>
+        <logback.version>1.2.13</logback.version>
         <restito.version>1.1.0</restito.version>
         <simple-jndi.version>0.23.0</simple-jndi.version>
 
