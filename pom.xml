@@ -123,8 +123,7 @@
 
         <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
 
-        <!-- For a release build, update this to https://backstage.forgerock.com/#!/docs/openig/${project.version} -->
-        <welcomeDocUrl>http://openig.forgerock.org/docs.html</welcomeDocUrl>
+        <welcomeDocUrl>https://docs.wrensecurity.org/wrenig/latest</welcomeDocUrl>
     </properties>
 
     <modules>

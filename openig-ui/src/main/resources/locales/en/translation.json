@@ -47,7 +47,7 @@
                     "throttling": "Throttling",
                     "authentication":"Authentication",
                     "authorization":"Authorization",
-                    "statistics": "Statistics"                    
+                    "statistics": "Statistics"
                 }
             }
         }
@@ -61,7 +61,7 @@
         },
         "routes": {
             "title": "Protected applications",
-            "description": "Configure OpenIG to protect your applications",
+            "description": "Configure Wren:IG to protect your applications",
             "filter": "Filter...",
             "addRoute": "Protect an app",
             "help": "Help",
@@ -116,7 +116,7 @@
                         "id": "ID",
                         "idHint": "Unique ID for the route",
                         "baseURI": "Base URI",
-                        "baseURIHint": "Internal URL for the application - OpenIG forwards proxied requests to this URL",
+                        "baseURIHint": "Internal URL for the application - Wren:IG forwards proxied requests to this URL",
                         "condition": "Accept Condition",
                         "conditionHint": "Enter a path or an expression to handle the request",
                         "conditionPlaceHolder": "For example, /my-app or ${matches(request.uri.path, '^/my-app')}",
@@ -138,7 +138,7 @@
                         "openID": "OpenID Connect",
                         "openIDHint": "Authenticate users to your application using OpenID Connect...",
                         "sso": "Single Sign-On",
-                        "ssoHint": "Use ForgeRock access management to enable single sign-on."
+                        "ssoHint": "Use Wren Security access management to enable single sign-on."
                     }
                 },
                 "openIDAuthentication":{
@@ -243,8 +243,8 @@
             }
         },
         "welcomePage": {
-            "title": "Welcome to ForgeRock Identity Gateway",
-            "subtitle": "ForgeRock Identity Gateway bridges your applications to the digital identity world. Use Identity Gateway Studio to develop and prototype protection for your applications and APIs.",
+            "title": "Welcome to Wren Security Identity Gateway",
+            "subtitle": "Wren Security Identity Gateway bridges your applications to the digital identity world. Use Identity Gateway Studio to develop and prototype protection for your applications and APIs.",
             "benefit_1": "Authenticate Users",
             "benefit_2": "Enforce Authorization Policies",
             "benefit_3": "Throttle Requests",
@@ -285,7 +285,7 @@
             "actions": "Actions",
             "complete": "Complete",
             "reset": "Reset",
-            "copyright": "Copyright (c) 2016 ForgeRock, all rights reserved.",
+            "copyright": "© Wren Security",
             "sessionExpired": "Session Expired",
             "enableCookies": "Cookies must be enabled to login",
             "reloadGrid": "Reload Grid",
@@ -363,8 +363,8 @@
             "d": "day(s)"
         },
         "footer":{
-            "versionInfo": "OpenIG __version__ Build __revision__ (__date__)",
-            "versionDate": "yyyy-MMMM-dd HH:mm"
+            "versionInfo": "Wren:IG __version__ Build __revision__ (__date__)",
+            "versionDate": "yyyy-MM-dd HH:mm:ss"
         }
     }
 }

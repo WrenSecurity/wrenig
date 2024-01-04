@@ -465,7 +465,7 @@ public class OAuth2ClientFilterTest {
     @Test
     public void shouldSucceedToHandleUserInitiatedLogoutWithGoto() throws Exception {
         // Given
-        setUpForHandleUserInitiatedLogoutCases("/logout?goto=www.forgerock.com");
+        setUpForHandleUserInitiatedLogoutCases("/logout?goto=www.wrensecurity.org");
         final OAuth2ClientFilter filter = buildOAuth2ClientFilter().setRequireHttps(false);
 
         // When
@@ -473,7 +473,7 @@ public class OAuth2ClientFilterTest {
 
         // Then
         assertThat(response.getStatus()).isEqualTo(FOUND);
-        assertThat(response.getHeaders().getFirst("Location")).isEqualTo("www.forgerock.com");
+        assertThat(response.getHeaders().getFirst("Location")).isEqualTo("www.wrensecurity.org");
         assertThatSessionIsEmpty();
         verifyNoInteractions(discoveryAndDynamicRegistrationChain, failureHandler, loginHandler, next,
                                registrationHandler);

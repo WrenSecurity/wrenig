@@ -77,7 +77,7 @@ define([
                     enabled: this.filters.openid.isFilterEnabled()
                 },
                 {
-                    img: "img/forgerock-mark-white.png",
+                    icon: "fa-cogs",
                     title: i18n.t("templates.routes.parts.authentication.fields.sso"),
                     hint: i18n.t("templates.routes.parts.authentication.fields.ssoHint"),
                     name: "sso",
