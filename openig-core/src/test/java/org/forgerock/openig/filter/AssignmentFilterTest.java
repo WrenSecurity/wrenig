@@ -138,7 +138,7 @@ public class AssignmentFilterTest {
     public void shouldChangeUriOnRequest() throws Exception {
         AssignmentFilter filter = new AssignmentFilter();
         filter.addRequestBinding(LeftValueExpression.valueOf("${request.uri}", String.class),
-                                 Expression.valueOf("www.forgerock.com", String.class));
+                                 Expression.valueOf("www.wrensecurity.org", String.class));
 
         Context context = new RootContext();
         Request request = new Request();
@@ -147,7 +147,7 @@ public class AssignmentFilterTest {
         Handler chain = Handlers.chainOf(new StaticResponseHandler(Status.OK), singletonList((Filter) filter));
 
         chain.handle(context, request).get();
-        assertThat(request.getUri().toString()).isEqualTo("www.forgerock.com");
+        assertThat(request.getUri().toString()).isEqualTo("www.wrensecurity.org");
     }
 
     @Test

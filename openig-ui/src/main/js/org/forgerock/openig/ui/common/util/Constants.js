@@ -18,7 +18,7 @@ define([
     "org/forgerock/commons/ui/common/util/Constants"
 ], (commonConstants) => {
 
-    commonConstants.DOC_URL = "https://backstage.forgerock.com/#!/docs/openig/5.0/";
+    commonConstants.DOC_URL = "https://docs.wrensecurity.org/wrenig/latest";
 
     commonConstants.defaultFiltersOrder = {
         ThrottlingFilter: 0,
