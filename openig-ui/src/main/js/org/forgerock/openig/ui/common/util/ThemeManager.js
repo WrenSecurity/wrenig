@@ -58,7 +58,7 @@ define([
                 return $.Deferred().resolve({
                     "path": "",
                     "icon": "favicon.ico",
-                    "stylesheets": ["css/bootstrap-3.3.5-custom.css", "css/structure.css", "css/theme.css"],
+                    "stylesheets": ["css/bootstrap.css", "css/structure.css", "css/theme.css"],
                     "settings": {
                         "logo": {
                             "src": "images/logo-horizontal.png",

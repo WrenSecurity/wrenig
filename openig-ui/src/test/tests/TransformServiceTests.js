@@ -12,17 +12,15 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
- * Portions Copyright 2023 Wren Security.
+ * Portions Copyright 2023-2024 Wren Security.
  */
 
 define([
-    "jquery",
     "lodash",
     "org/forgerock/openig/ui/admin/services/TransformService",
     "org/forgerock/openig/ui/admin/models/RouteModel",
     "org/forgerock/openig/ui/common/util/Constants"
 ], (
-    $,
     _,
     transformService,
     RouteModel,

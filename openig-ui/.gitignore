@@ -1,9 +1,21 @@
-.DS_Store
-docs
-node_modules
+# Dependency directories
+node_modules/
 node/
-target
+
+# Build related directories
+target/
+packages/*/build/
+dist/
+
+# Dotenv environment variable files
+.env
+
+# IDE configuration files
 .idea
 *.iml
-.vscode/launch.json
-jsconfig.json
+.project
+.settings/
+.vscode/
+
+# OS specific files
+.DS_Store

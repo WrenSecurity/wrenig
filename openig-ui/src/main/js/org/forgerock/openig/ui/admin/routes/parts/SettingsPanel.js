@@ -125,7 +125,7 @@ define([
         }
 
         getDropdownItems (options) {
-            return _.sortByOrder(
+            return _.orderBy(
                 _.map(options, (name) => (
                     {
                         name,

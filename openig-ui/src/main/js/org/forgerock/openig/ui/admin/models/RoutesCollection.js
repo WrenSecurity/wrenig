@@ -67,7 +67,7 @@ define([
         byRouteId (id) {
             const deferred = $.Deferred();
             this.availableRoutes().then(() => {
-                deferred.resolve(this.findWhere({ id }));
+                deferred.resolve(this.find({ id }));
             });
 
             return deferred;
@@ -76,7 +76,7 @@ define([
         // Remove also from local cache
         removeByRouteId (id) {
             const deferred = $.Deferred();
-            const item = this.findWhere({ id });
+            const item = this.find({ id });
             item.destroy()
                 .then(
                     (model) => {

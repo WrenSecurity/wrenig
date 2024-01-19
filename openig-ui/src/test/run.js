@@ -12,23 +12,21 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
- * Portions Copyright 2023 Wren Security.
+ * Portions Copyright 2023-2024 Wren Security.
  */
 
 /* global Backbone, _ */
 
 define([
     "jquery",
-    "doTimeout",
     "org/forgerock/commons/ui/common/util/Constants",
     "org/forgerock/commons/ui/common/main/EventManager",
-    "../test/tests/OpenIGValidatorsTests",
-    "../test/tests/TransformServiceTests",
-    "../test/tests/DataFilterTests",
-    "../test/tests/getLoggedUser"
+    "./tests/OpenIGValidatorsTests",
+    "./tests/TransformServiceTests",
+    "./tests/DataFilterTests",
+    "./tests/getLoggedUser"
 ], (
     $,
-    doTimeout,
     constants,
     eventManager,
     openIGValidatorsTests,
@@ -40,27 +38,12 @@ define([
         func(); // run the function immediately rather than delayed.
     };
 
-    // TODO: Remove this after upgrade to newer phantomjs
-    if (!Function.prototype.bind) {
-        // eslint-disable-next-line no-extend-native
-        Function.prototype.bind = function (otherThis) {
-            return _.bind(this, otherThis);
-        };
-    }
-
     return function (server) {
 
         eventManager.registerListener(constants.EVENT_APP_INITIALIZED, () => {
             require("ThemeManager").getTheme().then(() => {
                 QUnit.testStart((testDetails) => {
                     console.log(`Starting ${testDetails.module}":"${testDetails.name}(${testDetails.testNumber})`);
-
-                    const vm = require("org/forgerock/commons/ui/common/main/ViewManager");
-
-                    vm.currentView = null;
-                    vm.currentDialog = null;
-                    vm.currentViewArgs = null;
-                    vm.currentDialogArgs = null;
 
                     require("org/forgerock/commons/ui/common/main/Configuration").baseTemplate = null;
                 });
