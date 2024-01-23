@@ -19,7 +19,8 @@ const {
     useLocalResources,
     useModuleResources,
     useLessStyles,
-    useBuildRequire
+    useBuildRequire,
+    useBuildModule
 } = require("@wrensecurity/commons-ui-build");
 const gulp = require("gulp");
 const { runQunitPuppeteer, printResultSummary } = require("node-qunit-puppeteer");
@@ -34,11 +35,7 @@ const MODULE_RESOURCES = {
     "dragula/dist/dragula.min.css": "css/dragula.css",
     "dragula/dist/dragula.min.js": "libs/dragula.js",
     "qunit/qunit/qunit.css": "css/qunit.css",
-    "qunit/qunit/qunit.js": "libs/qunit.js",
-    //~ Code mirror resources
-    "codemirror/lib/codemirror.css": "css/codemirror/codemirror.css",
-    "codemirror/lib/codemirror.js": "libs/codemirror/lib/codemirror.js",
-    "codemirror/mode/javascript/javascript.js": "libs/codemirror/mode/javascript/javascript.js"
+    "qunit/qunit/qunit.js": "libs/qunit.js"
 };
 
 const LOCAL_RESOURCES = {
@@ -69,6 +66,12 @@ gulp.task("build:styles", useLessStyles({
     "target/www/css/structure.less": "css/structure.css",
     "target/www/css/theme.less": "css/theme.css"
 }, { base: join(TARGET_PATH, "css"), dest: TARGET_PATH }));
+
+gulp.task("build:editor", useBuildModule({
+    id: "org/forgerock/openig/ui/common/util/CodeMirror",
+    src: "src/main/js/org/forgerock/openig/ui/common/util/CodeMirror.mjs",
+    dest: join(TARGET_PATH, "org/forgerock/openig/ui/common/util/CodeMirror.js")
+}));
 
 gulp.task("build:bundle", useBuildRequire({
     base: TARGET_PATH,
@@ -106,6 +109,7 @@ gulp.task("build", gulp.series(
         "build:assets",
         "build:scripts",
         "build:compose",
+        "build:editor",
         "build:libs",
         "test:sinon"
     ),

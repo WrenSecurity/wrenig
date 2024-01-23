@@ -27,8 +27,7 @@ define([
     "org/forgerock/openig/ui/admin/services/TransformService",
     "org/forgerock/commons/ui/common/main/Router",
     "org/forgerock/openig/ui/common/util/Clipboard",
-    "libs/codemirror/lib/codemirror",
-    "libs/codemirror/mode/javascript/javascript"
+    "org/forgerock/openig/ui/common/util/CodeMirror"
 ], (
     $,
     _,
@@ -126,16 +125,11 @@ define([
         );
 
         const msgNode = $(`<div><pre id="jsonExportContent" class="hidden-pre">${jsonContent}</pre></div>`);
-        const codeMirror = CodeMirror((elm) => {
-            msgNode.append(elm);
-        }, {
+        CodeMirror(msgNode[0], {
             value: jsonContent,
-            mode: "application/ld+json",
-            theme: "forgerock",
             autofocus: true,
             readOnly: true
         });
-        codeMirror.setSize("100%", "100%");
         BootstrapDialog.show({
             title: i18n.t("common.modalWindow.title.configExport"),
             message: msgNode,
@@ -143,7 +137,6 @@ define([
             buttons,
             onshown () {
                 this.message.css("max-height", "calc(100vh - 212px)");
-                codeMirror.refresh();
                 this.message.css("height", this.message.find(".CodeMirror").height());
             }
         });
