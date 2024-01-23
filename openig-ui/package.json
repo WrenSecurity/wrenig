@@ -15,7 +15,8 @@
     "node-qunit-puppeteer": "^2.1.2"
   },
   "dependencies": {
-    "codemirror": "^4.10.0",
+    "@codemirror/lang-javascript": "^6.2.1",
+    "codemirror": "^6.0.1",
     "dragula": "^3.6.7",
     "d3": "^3.5.5",
     "qunit": "^2.20.0",

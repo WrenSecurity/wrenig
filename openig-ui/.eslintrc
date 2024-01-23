@@ -18,6 +18,13 @@
             "parserOptions": {
                 "ecmaVersion": 2021
             }
+        },
+        {
+            "files": "*.mjs",
+            "parserOptions": {
+                "sourceType": "module",
+                "ecmaVersion": 2021
+            }
         }
     ],
     "rules": {
