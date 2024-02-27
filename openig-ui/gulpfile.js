@@ -50,10 +50,7 @@ gulp.task("eslint", useEslint({ src: "src/main/js/**/*.js" }));
 
 gulp.task("build:assets", useLocalResources({ "src/main/resources/**": "" }, { dest: TARGET_PATH }));
 
-gulp.task("build:scripts", useBuildScripts({
-    src: "src/main/js/**/*.js",
-    dest: TARGET_PATH
-}));
+gulp.task("build:scripts", useLocalResources({ "src/main/js/**/*.js": "" }, { dest: TARGET_PATH }));
 
 gulp.task("build:compose", useLocalResources({ "target/ui-compose/**": "" }, { dest: TARGET_PATH }));
 
@@ -69,7 +66,7 @@ gulp.task("build:styles", useLessStyles({
 
 gulp.task("build:editor", useBuildModule({
     id: "org/forgerock/openig/ui/common/util/CodeMirror",
-    src: "src/main/js/org/forgerock/openig/ui/common/util/CodeMirror.mjs",
+    src: "src/main/js/org/forgerock/openig/ui/common/util/CodeMirror.jsm",
     dest: join(TARGET_PATH, "org/forgerock/openig/ui/common/util/CodeMirror.js")
 }));
 
@@ -90,7 +87,8 @@ gulp.task("test:scripts", useLocalResources(TEST_RESOURCES, { dest: TESTS_PATH }
 
 gulp.task("test:sinon", useBuildScripts({
     src: require.resolve("sinon/pkg/sinon.js"),
-    dest: join(TARGET_PATH, "libs")
+    dest: join(TARGET_PATH, "libs"),
+    plugins: []
 }));
 
 gulp.task("test:qunit", async () => {
@@ -119,7 +117,6 @@ gulp.task("build", gulp.series(
     )
 ));
 
-// TODO FIXME QUnit tests are temporarily disabled
 gulp.task("test", gulp.series(
     "test:scripts",
     "test:qunit"
