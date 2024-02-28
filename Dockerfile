@@ -26,6 +26,7 @@ RUN \
 
 # Copy built artifact into target directory
 RUN \
+  --mount=type=cache,target=/root/.m2 \
   mkdir /build && \
   mvn -Dexpression=project.version -q -DforceStdout help:evaluate > /build/version.txt && \
   unzip openig-war/target/wrenig-$(cat /build/version.txt).war -d /build/wrenig
