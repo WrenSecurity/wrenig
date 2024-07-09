@@ -32,7 +32,7 @@
 
     <properties>
         <dropwizard-metrics.version>3.1.2</dropwizard-metrics.version>
-        <groovy.version>2.4.6</groovy.version>
+        <groovy.version>2.4.21</groovy.version>
         <h2.version>2.2.224</h2.version>
         <juel.version>2.2.7</juel.version>
         <logback.version>1.2.13</logback.version>
