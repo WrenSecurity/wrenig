@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wrensecurity.wrenig</groupId>
         <artifactId>openig-project</artifactId>
-        <version>5.0.0-M2</version>
+        <version>5.0.0-M3-SNAPSHOT</version>
     </parent>
 
     <artifactId>openig-core</artifactId>
