@@ -42,14 +42,10 @@ ENV \
   " \
   CATALINA_OPTS="-server -Xmx512m"
 
-# Create wrenig user
 ARG WRENIG_UID=1000
-ARG WRENIG_GID=1000
-RUN addgroup --gid ${WRENIG_GID} wrenig && \
-    adduser --uid ${WRENIG_UID} --gid ${WRENIG_GID} --system wrenig
 
 # Deploy wrenig project
-COPY --chown=wrenig:root --from=project-build /build/wrenig /usr/local/tomcat/webapps/ROOT
+COPY --from=project-build /build/wrenig /usr/local/tomcat/webapps/ROOT
 
 USER ${WRENIG_UID}
 WORKDIR ${WRENIG_HOME}
