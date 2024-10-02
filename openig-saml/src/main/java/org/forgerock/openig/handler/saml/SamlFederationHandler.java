@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2016 ForgeRock AS.
+ * Portions Copyright 2024 Wren Security.
  */
 package org.forgerock.openig.handler.saml;
 
@@ -318,19 +319,12 @@ public class SamlFederationHandler implements Handler {
         }
         String idpEntityID = form.getFirst(SAML2Constants.IDPENTITYID);
         Map<String, List<String>> paramsMap = SAML2Utils.getParamsMap(servletRequest);
-        List<String> list = new ArrayList<>();
-        list.add(SAML2Constants.NAMEID_TRANSIENT_FORMAT);
 
-        // next line testing to see if we can change the name format
-        paramsMap.put(SAML2Constants.NAMEID_POLICY_FORMAT, list);
-
-        // TODO: add option to specify artifact
         if (paramsMap.get(SAML2Constants.BINDING) == null) {
-            // use POST binding
-            list = new ArrayList<>();
-            list.add(SAML2Constants.HTTP_POST);
-            paramsMap.put(SAML2Constants.BINDING, list);
+            // Use POST binding as default value
+            paramsMap.put(SAML2Constants.BINDING, List.of(SAML2Constants.HTTP_POST));
         }
+
         if (idpEntityID == null || idpEntityID.length() == 0) {
             SAML2MetaManager manager = new SAML2MetaManager();
             List<String> idpEntities = manager.getAllRemoteIdentityProviderEntities(DEFAULT_REALM);
