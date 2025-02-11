@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2015-2016 ForgeRock AS.
+ * Portions Copyright 2025 Wren Security.
  */
 package org.forgerock.openig.filter.oauth2.client;
 
@@ -136,6 +137,16 @@ class AuthorizationRedirectHandler implements Handler {
             final String nonce = createAuthorizationNonce();
             final String hash = createAuthorizationNonceHash(nonce);
             query.add("state", createAuthorizationState(hash, gotoUri));
+
+            /**
+             * Nonce is optional in the authorization code flow according to the RFC (required
+             * only in the implicit flow), but some IdPs require it in this flow type as well.
+             * So we will send the value in all authorization requests. The value is checked
+             * during the ID token validation.
+             */
+            if (requestedScopes.contains("openid")) {
+                query.add("nonce", nonce);
+            }
 
             final String redirect = appendQuery(issuer.getAuthorizeEndpoint(), query).toString();
 

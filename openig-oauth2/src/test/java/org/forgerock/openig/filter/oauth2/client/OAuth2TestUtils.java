@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2025 Wren Security.
  */
 package org.forgerock.openig.filter.oauth2.client;
 
@@ -111,7 +112,7 @@ public final class OAuth2TestUtils {
                                                   final String requestedUri,
                                                   final List<String> scopes) {
         return json(object(field("crn", clientRegistrationName),
-                           field("arn", "af0ifjsldkj"),
+                           field("arn", "n-0S6_WzA2Mj"),
                            field("ce", requestedUri),
                            field("s", scopes),
                            field("atr", object(field("access_token", ID_TOKEN),
