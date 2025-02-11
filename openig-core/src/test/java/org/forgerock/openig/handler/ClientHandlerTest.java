@@ -12,72 +12,69 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2016 ForgeRock AS.
- * Portions Copyright 2023 Wren Security.
+ * Portions Copyright 2023-2025 Wren Security.
  */
 
 package org.forgerock.openig.handler;
 
-import static com.xebialabs.restito.builder.stub.StubHttp.whenHttp;
-import static com.xebialabs.restito.builder.verify.VerifyHttp.verifyHttp;
-import static com.xebialabs.restito.semantics.Action.status;
-import static com.xebialabs.restito.semantics.Condition.alwaysTrue;
-import static com.xebialabs.restito.semantics.Condition.method;
-import static com.xebialabs.restito.semantics.Condition.not;
-import static com.xebialabs.restito.semantics.Condition.post;
-import static com.xebialabs.restito.semantics.Condition.uri;
-import static com.xebialabs.restito.semantics.Condition.withPostBody;
-import static com.xebialabs.restito.semantics.Condition.withPostBodyContaining;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.ok;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.forgerock.util.Options.defaultOptions;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.forgerock.http.Handler;
 import org.forgerock.http.handler.HttpClientHandler;
 import org.forgerock.http.protocol.Request;
 import org.forgerock.http.protocol.Response;
 import org.forgerock.http.protocol.Status;
 import org.forgerock.services.context.RootContext;
-import org.glassfish.grizzly.http.Method;
-import org.glassfish.grizzly.http.util.HttpStatus;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.xebialabs.restito.server.StubServer;
 
 @SuppressWarnings("javadoc")
 public class ClientHandlerTest {
 
-    private StubServer server;
+    private WireMockServer server;
 
     @Mock
     private Handler delegate;
 
-    @BeforeMethod
-    public void beforeMethod() throws Exception {
-        server = new StubServer().run();
-        MockitoAnnotations.openMocks(this);
+    @BeforeClass
+    public void init() throws Exception {
+        server = new WireMockServer(wireMockConfig().dynamicPort());
+        server.start();
     }
 
-    @AfterMethod
-    public void afterMethod() throws Exception {
+    @AfterClass
+    public void teardown() throws Exception {
         server.stop();
+    }
+
+    @BeforeMethod
+    public void beforeMethod() throws Exception {
+        MockitoAnnotations.openMocks(this);
+        server.resetAll();
     }
 
     @Test(description = "test for OPENIG-315")
     public void checkRequestIsForwardedUnaltered() throws Exception {
-        final int port = server.getPort();
-        whenHttp(server).match(alwaysTrue()).then(status(HttpStatus.OK_200));
-
+        server.stubFor(post("/example").willReturn(ok()));
         try (HttpClientHandler clientHandler = new HttpClientHandler(defaultOptions())) {
             Request request = new Request();
             request.setMethod("POST");
-            request.setUri("http://0.0.0.0:" + port + "/example");
+            request.setUri("http://0.0.0.0:" + server.port() + "/example");
 
             final Map<String, Object> json = new LinkedHashMap<>();
             json.put("k1", "v1");
@@ -88,22 +85,18 @@ public class ClientHandlerTest {
             Response response = handler.handle(null, request).get();
 
             assertThat(response.getStatus()).isEqualTo(Status.OK);
-            verifyHttp(server).once(method(Method.POST), uri("/example"),
-                                    withPostBodyContaining("{\"k1\":\"v1\",\"k2\":\"v2\"}"));
+            server.verify(postRequestedFor(urlEqualTo("/example")).withRequestBody(equalTo("{\"k1\":\"v1\",\"k2\":\"v2\"}")));
         }
     }
 
     @Test
     public void shouldSendPostHttpMessageWithEntityContent() throws Exception {
-        whenHttp(server).match(post("/test"),
-                               withPostBodyContaining("Hello"))
-                        .then(status(HttpStatus.OK_200));
-
+        server.stubFor(post("/test").willReturn(ok("Hello")));
         try (HttpClientHandler clientHandler = new HttpClientHandler(defaultOptions())) {
             ClientHandler handler = new ClientHandler(clientHandler);
             Request request = new Request();
             request.setMethod("POST");
-            request.setUri(format("http://localhost:%d/test", server.getPort()));
+            request.setUri(format("http://localhost:%d/test", server.port()));
             request.getEntity().setString("Hello");
             assertThat(handler.handle(new RootContext(), request).get().getStatus())
                     .isEqualTo(Status.OK);
@@ -112,17 +105,13 @@ public class ClientHandlerTest {
 
     @Test
     public void shouldSendPostHttpMessageWithEmptyEntity() throws Exception {
-        whenHttp(server).match(post("/test"),
-                               not(withPostBody()))
-                        .then(status(HttpStatus.OK_200));
-
+        server.stubFor(post("/test").willReturn(ok()));
         try (HttpClientHandler clientHandler = new HttpClientHandler(defaultOptions())) {
             ClientHandler handler = new ClientHandler(clientHandler);
             Request request = new Request();
             request.setMethod("POST");
-            request.setUri(format("http://localhost:%d/test", server.getPort()));
-            assertThat(handler.handle(new RootContext(), request).get()
-                              .getStatus()).isEqualTo(Status.OK);
+            request.setUri(format("http://localhost:%d/test", server.port()));
+            assertThat(handler.handle(new RootContext(), request).get().getStatus()).isEqualTo(Status.OK);
         }
     }
 }

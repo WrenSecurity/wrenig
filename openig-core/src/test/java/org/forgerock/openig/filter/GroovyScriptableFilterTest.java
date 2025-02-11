@@ -12,16 +12,15 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2016 ForgeRock AS.
- * Portions Copyright 2023 Wren Security.
+ * Portions Copyright 2023-2025 Wren Security.
  */
 package org.forgerock.openig.filter;
 
-import static com.xebialabs.restito.builder.stub.StubHttp.whenHttp;
-import static com.xebialabs.restito.builder.verify.VerifyHttp.verifyHttp;
-import static com.xebialabs.restito.semantics.Action.status;
-import static com.xebialabs.restito.semantics.Action.stringContent;
-import static com.xebialabs.restito.semantics.Condition.get;
-import static com.xebialabs.restito.semantics.Condition.method;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.ok;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -38,8 +37,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 import com.forgerock.reactive.ServerConnectionFactoryAdapter;
-import com.xebialabs.restito.semantics.Condition;
-import com.xebialabs.restito.server.StubServer;
+import com.github.tomakehurst.wiremock.WireMockServer;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -52,7 +50,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import javax.naming.InitialContext;
 import javax.script.ScriptException;
 import org.forgerock.http.Handler;
 import org.forgerock.http.filter.ResponseHandler;
@@ -84,8 +81,6 @@ import org.forgerock.services.context.RootContext;
 import org.forgerock.util.promise.NeverThrowsException;
 import org.forgerock.util.promise.Promise;
 import org.forgerock.util.promise.Promises;
-import org.glassfish.grizzly.http.Method;
-import org.glassfish.grizzly.http.util.HttpStatus;
 import org.h2.jdbcx.JdbcDataSource;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -286,24 +281,23 @@ public class GroovyScriptableFilterTest {
 
     @Test(dataProvider = "httpSendMethodLine")
     public void testHttpClient(final String httpSendLine) throws Exception {
-        // Create mock HTTP server.
-        final StubServer server = new StubServer().run();
-        whenHttp(server).match(get("/example")).then(status(HttpStatus.OK_200),
-                                                     stringContent(JSON_CONTENT));
+        // Create mock HTTP server
+        WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort());
+        server.start();
+        server.stubFor(get("/example").willReturn(ok(JSON_CONTENT)));
         try (HttpClientHandler clientHandler = new HttpClientHandler(defaultOptions())) {
-            final int port = server.getPort();
             // @formatter:off
             final ScriptableFilter filter = newGroovyFilter(
                     "Request request = new Request()",
                     "request.method = 'GET'",
-                    "request.uri = new URI('http://0.0.0.0:" + port + "/example')",
+                    "request.uri = new URI('http://0.0.0.0:" + server.port() + "/example')",
                     httpSendLine);
             filter.setClientHandler(clientHandler);
 
             // @formatter:on
             Response response = filter.filter(new RootContext(), new Request(), null).get();
 
-            verifyHttp(server).once(method(Method.GET), Condition.uri("/example"));
+            server.verify(1, getRequestedFor(urlEqualTo("/example")));
             assertThat(response.getStatus()).isEqualTo(Status.OK);
             assertThat(response.getEntity().getString()).isEqualTo(JSON_CONTENT);
         } finally {
