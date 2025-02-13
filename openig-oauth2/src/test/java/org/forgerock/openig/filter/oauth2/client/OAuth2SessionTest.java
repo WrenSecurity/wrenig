@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2014 ForgeRock AS.
+ * Portions Copyright 2025 Wren Security.
  */
 package org.forgerock.openig.filter.oauth2.client;
 
@@ -127,7 +128,7 @@ public class OAuth2SessionTest {
         OAuth2Session session = OAuth2Session.stateNew(time)
                                              .stateAuthorizing("clientRegistration",
                                                                "endpoint",
-                                                               "nonce",
+                                                               "n-0S6_WzA2Mj",
                                                                asList("scope1", "scope2"))
                                              .stateAuthorized(accessTokenResponse);
         // @formatter:on
@@ -207,7 +208,7 @@ public class OAuth2SessionTest {
         OAuth2Session session = OAuth2Session.stateNew(time)
                                              .stateAuthorizing("clientRegistration",
                                                                "endpoint",
-                                                               "nonce",
+                                                               "n-0S6_WzA2Mj",
                                                                asList("scope1", "scope2"))
                                              .stateAuthorized(accessTokenResponse);
         // @formatter:on
@@ -264,7 +265,7 @@ public class OAuth2SessionTest {
         OAuth2Session session = OAuth2Session.stateNew(time)
                                              .stateAuthorizing("clientRegistration",
                                                                "endpoint",
-                                                               "nonce",
+                                                               "n-0S6_WzA2Mj",
                                                                asList("scope1", "scope2"))
                                              .stateAuthorized(accessTokenResponse)
                                              .stateRefreshed(refreshAccessTokenResponse);

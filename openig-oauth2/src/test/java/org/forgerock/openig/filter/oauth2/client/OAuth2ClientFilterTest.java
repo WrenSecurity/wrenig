@@ -12,7 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
- * Portions Copyright 2023 Wren Security.
+ * Portions Copyright 2023-2025 Wren Security.
  */
 package org.forgerock.openig.filter.oauth2.client;
 
@@ -361,7 +361,7 @@ public class OAuth2ClientFilterTest {
     @Test
     public void shouldFailToHandleAuthorizationCallbackWhenSessionStateIsNotAuthorizing() throws Exception {
         // Given
-        setUpForHandleAuthorizationCallbackCases("/callback?state=af0ifjsldkj");
+        setUpForHandleAuthorizationCallbackCases("/callback?state=n-0S6_WzA2Mj");
         final OAuth2ClientFilter filter = buildOAuth2ClientFilter().setRequireHttps(false);
         setSessionAuthorized();
 
@@ -378,7 +378,7 @@ public class OAuth2ClientFilterTest {
     @Test
     public void shouldFailToHandleAuthorizationCallbackWhenNoCodeProvided() throws Exception {
         // Given
-        setUpForHandleAuthorizationCallbackCases("/callback?state=af0ifjsldkj");
+        setUpForHandleAuthorizationCallbackCases("/callback?state=n-0S6_WzA2Mj");
         final OAuth2ClientFilter filter = buildOAuth2ClientFilter().setRequireHttps(false);
         setSessionAuthorized();
 
@@ -395,7 +395,7 @@ public class OAuth2ClientFilterTest {
     @Test
     public void shouldFailToHandleAuthorizationCallbackWhenNoClientRegistrationSpecified() throws Exception {
         // Given
-        setUpForHandleAuthorizationCallbackCases("/callback?state=af0ifjsldkj&code=authorizationCode");
+        setUpForHandleAuthorizationCallbackCases("/callback?state=n-0S6_WzA2Mj&code=authorizationCode");
         final OAuth2ClientFilter filter = buildOAuth2ClientFilter().setRequireHttps(false);
         setSessionAuthorized();
 
@@ -418,7 +418,7 @@ public class OAuth2ClientFilterTest {
                                                         field("refresh_token", NEW_REFRESH_TOKEN),
                                                         field("expires_in", 1000),
                                                         field("id_token", OAuth2TestUtils.ID_TOKEN))))));
-        setUpForHandleAuthorizationCallbackCases("/callback?state=af0ifjsldkj:redirectUri&code=authorizationCode");
+        setUpForHandleAuthorizationCallbackCases("/callback?state=n-0S6_WzA2Mj:redirectUri&code=authorizationCode");
         registrations.add(buildClientRegistration(DEFAULT_CLIENT_REGISTRATION_NAME, registrationHandler));
         final OAuth2ClientFilter filter = buildOAuth2ClientFilter().setRequireHttps(false);
         setSessionAuthorized();

@@ -12,6 +12,7 @@
  * information: "Portions Copyright [year] [name of copyright owner]".
  *
  * Copyright 2014-2016 ForgeRock AS.
+ * Portions Copyright 2025 Wren Security.
  */
 package org.forgerock.openig.filter.oauth2.client;
 
@@ -212,6 +213,11 @@ final class OAuth2Session {
         }
         // Decode the ID token for OpenID Connect interactions.
         final SignedJwt idToken = extractIdToken(accessTokenResponse);
+        // Verify ID token nonce
+        if (idToken != null && authorizationRequestNonce != null && (!idToken.getClaimsSet().isDefined("nonce") ||
+                !authorizationRequestNonce.equals(idToken.getClaimsSet().getClaim("nonce")))) {
+            throw new OAuth2ErrorException(OAuth2Error.E_SERVER_ERROR, "ID token nonce does not match the value sent in the authentication request");
+        }
 
         return new OAuth2Session(time, clientRegistrationName, clientEndpoint, null, actualScopes,
                 accessTokenResponse, idToken, expiresAt);
