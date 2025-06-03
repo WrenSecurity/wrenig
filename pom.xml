@@ -118,7 +118,7 @@
     </issueManagement>
 
     <properties>
-        <wrensec.commons.version>22.6.0</wrensec.commons.version>
+        <wrensec.commons.version>22.6.1</wrensec.commons.version>
 
         <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
 
