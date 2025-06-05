@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wrensecurity</groupId>
         <artifactId>wrensec-parent</artifactId>
-        <version>4.0.0</version>
+        <version>4.0.2</version>
     </parent>
 
     <groupId>org.wrensecurity.wrenig</groupId>
@@ -118,8 +118,7 @@
     </issueManagement>
 
     <properties>
-        <pgpVerifyKeysVersion>1.8.2</pgpVerifyKeysVersion>
-        <wrensec.commons.version>22.6.0</wrensec.commons.version>
+        <wrensec.commons.version>22.6.1</wrensec.commons.version>
 
         <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
 

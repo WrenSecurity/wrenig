@@ -12,15 +12,15 @@
     "eslint": "^8.53.0",
     "gulp": "^4.0.2",
     "lodash": "^4.13.1",
-    "node-qunit-puppeteer": "^2.1.2"
+    "node-qunit-puppeteer": "^2.2.1"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.1",
     "codemirror": "^6.0.1",
     "d3": "^3.5.5",
     "dragula": "^3.6.7",
-    "qunit": "^2.20.0",
+    "qunit": "^2.24.1",
     "requirejs": "^2.3.6",
-    "sinon": "^17.0.1"
+    "sinon": "^18.0.1"
   }
 }
