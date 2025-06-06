@@ -118,6 +118,7 @@
     </issueManagement>
 
     <properties>
+        <pgpVerifyKeysVersion>1.8.4</pgpVerifyKeysVersion>
         <wrensec.commons.version>22.6.1</wrensec.commons.version>
 
         <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
