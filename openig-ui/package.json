@@ -9,9 +9,9 @@
   "devDependencies": {
     "@wrensecurity/commons-ui-build": "file:target/ui-libs/wrensecurity-commons-ui-build-0.0.0.tgz",
     "@wrensecurity/eslint-config": "^0.2.0",
-    "eslint": "^8.53.0",
-    "gulp": "^4.0.2",
-    "lodash": "^4.13.1",
+    "eslint": "^8.57.1",
+    "gulp": "^5.0.1",
+    "lodash": "^4.17.21",
     "node-qunit-puppeteer": "^2.2.1"
   },
   "dependencies": {
@@ -20,7 +20,7 @@
     "d3": "^3.5.5",
     "dragula": "^3.6.7",
     "qunit": "^2.24.1",
-    "requirejs": "^2.3.6",
+    "requirejs": "^2.3.7",
     "sinon": "^18.0.1"
   }
 }
