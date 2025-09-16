@@ -16,7 +16,7 @@
 
 package org.forgerock.openig.el;
 
-import javax.el.ELException;
+import jakarta.el.ELException;
 
 import org.forgerock.util.Reject;
 import org.slf4j.Logger;
