@@ -30,7 +30,7 @@
     <name>Wren:IG - SAML</name>
 
     <properties>
-        <wrenam.version>15.2.0-M1</wrenam.version>
+        <wrenam.version>15.2.0</wrenam.version>
         <saaj-impl.version>1.5.3</saaj-impl.version>
     </properties>
 
