@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.el.FunctionMapper;
+import jakarta.el.FunctionMapper;
 
 import org.forgerock.http.util.Uris;
 import org.forgerock.util.Reject;

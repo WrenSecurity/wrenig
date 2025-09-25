@@ -13,6 +13,7 @@
  *
  * Copyright 2010-2011 ApexIdentity Inc.
  * Portions Copyright 2011-2016 ForgeRock AS.
+ * Portions Copyright 2025 Wren Security.
  */
 
 package org.forgerock.openig.el;
@@ -23,21 +24,20 @@ import java.beans.FeatureDescriptor;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
-import javax.el.BeanELResolver;
-import javax.el.ELContext;
-import javax.el.ELException;
-import javax.el.ELResolver;
-import javax.el.FunctionMapper;
-import javax.el.ValueExpression;
-import javax.el.VariableMapper;
+import jakarta.el.BeanELResolver;
+import jakarta.el.ELContext;
+import jakarta.el.ELException;
+import jakarta.el.ELResolver;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.FunctionMapper;
+import jakarta.el.ValueExpression;
+import jakarta.el.VariableMapper;
 
 import org.forgerock.http.util.Loader;
 import org.forgerock.openig.resolver.Resolver;
 import org.forgerock.openig.resolver.Resolvers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.odysseus.el.ExpressionFactoryImpl;
 
 /**
  * An Unified Expression Language expression. Creating an expression is the equivalent to
@@ -110,7 +110,6 @@ public class Expression<T> {
         this.expectedType = expectedType;
         this.initialBindings = initialBindings;
         try {
-            ExpressionFactoryImpl exprFactory = new ExpressionFactoryImpl();
             /*
              * We still use Object.class but use the expectedType in the evaluation. If we use the expectedType instead
              * of Object.class at the creation, then we had some breaking changes :
@@ -120,7 +119,7 @@ public class Expression<T> {
              *
              * But note that by still using Object.class prevents from using our own TypeConverter.
              */
-            valueExpression = exprFactory.createValueExpression(new XLContext(null), expression, Object.class);
+            valueExpression = ExpressionFactory.newInstance().createValueExpression(new XLContext(null), expression, Object.class);
         } catch (ELException ele) {
             throw new ExpressionException(ele);
         }

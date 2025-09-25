@@ -27,10 +27,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
 
-import javax.servlet.ServletContainerInitializer;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
+import jakarta.servlet.ServletContainerInitializer;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRegistration;
 
 import org.forgerock.http.servlet.HttpFrameworkServlet;
 import org.forgerock.json.JsonValue;
@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.util.StatusPrinter;
+import ch.qos.logback.core.util.StatusPrinter2;
 
 /**
  * This class is called automatically from the JEE container and initializes the whole OpenIG product.
@@ -157,7 +157,7 @@ public class OpenIGInitializer implements ServletContainerInitializer {
         } catch (JoranException | MalformedURLException je) {
             // StatusPrinter will handle this
         }
-        StatusPrinter.printInCaseOfErrorsOrWarnings(context);
+        new StatusPrinter2().printInCaseOfErrorsOrWarnings(context);
     }
 
     private URL findLogBackXml() throws MalformedURLException {
