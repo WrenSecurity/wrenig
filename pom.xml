@@ -14,7 +14,7 @@
 
     Copyright 2010-2011 ApexIdentity Inc.
     Portions Copyright 2011-2016 ForgeRock AS.
-    Portions Copyright 2023 Wren Security.
+    Portions Copyright 2023-2025 Wren Security.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -119,9 +119,13 @@
 
     <properties>
         <pgpVerifyKeysVersion>1.9.3</pgpVerifyKeysVersion>
-        <wrensec.commons.version>22.6.1</wrensec.commons.version>
 
-        <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
+        <assertj.version>3.19.0</assertj.version>
+        <jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
+        <mockito.version>5.5.0</mockito.version>
+        <slf4j.version>2.0.17</slf4j.version>
+        <testng.version>7.8.0</testng.version>
+        <wrensec.commons.version>23.0.0-M1</wrensec.commons.version>
 
         <welcomeDocUrl>https://docs.wrensecurity.org/wrenig/latest</welcomeDocUrl>
     </properties>
@@ -181,13 +185,17 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Main Bill of Materials pom -->
             <dependency>
-                <groupId>org.wrensecurity.commons</groupId>
-                <artifactId>commons-bom</artifactId>
-                <version>${wrensec.commons.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta.servlet-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${assertj.version}</version>
             </dependency>
 
             <dependency>
@@ -197,10 +205,47 @@
             </dependency>
 
             <dependency>
-                <groupId>jakarta.servlet</groupId>
-                <artifactId>jakarta.servlet-api</artifactId>
-                <version>${jakarta.servlet-api.version}</version>
-                <scope>provided</scope>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-nop</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>${testng.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wrensecurity.commons</groupId>
+                <artifactId>commons-bom</artifactId>
+                <version>${wrensec.commons.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>

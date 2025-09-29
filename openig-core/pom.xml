@@ -34,12 +34,13 @@
         <dropwizard-metrics.version>3.1.2</dropwizard-metrics.version>
         <groovy.version>3.0.25</groovy.version>
         <h2.version>2.2.224</h2.version>
+        <jackson.version>2.15.2</jackson.version>
         <juel.version>2.2.7</juel.version>
-        <logback.version>1.2.13</logback.version>
+        <logback.version>1.5.18</logback.version>
         <wiremock.version>3.11.0</wiremock.version>
         <simple-jndi.version>0.23.0</simple-jndi.version>
 
-        <wrends.version>5.0.1</wrends.version>
+        <wrends.version>5.0.2</wrends.version>
     </properties>
 
     <dependencies>
@@ -54,6 +55,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
