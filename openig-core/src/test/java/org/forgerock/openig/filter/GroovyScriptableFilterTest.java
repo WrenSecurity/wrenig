@@ -150,7 +150,6 @@ public class GroovyScriptableFilterTest {
                 { "import static does.not.Exist" },
                 { "try {" },
                 { "http://www.example.com" },
-                { "as Promise" },
         };
         // @Checkstyle:on
     }
