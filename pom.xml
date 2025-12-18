@@ -118,7 +118,7 @@
     </issueManagement>
 
     <properties>
-        <pgpVerifyKeysVersion>1.9.3</pgpVerifyKeysVersion>
+        <pgpVerifyKeysVersion>1.9.6</pgpVerifyKeysVersion>
 
         <assertj.version>3.19.0</assertj.version>
         <jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>

@@ -14,7 +14,7 @@
 
     Copyright 2010-2011 ApexIdentity Inc.
     Portions Copyright 2011-2016 ForgeRock AS.
-    Portions Copyright 2023 Wren Security.
+    Portions Copyright 2023-2025 Wren Security.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -32,7 +32,7 @@
 
     <properties>
         <dropwizard-metrics.version>3.1.2</dropwizard-metrics.version>
-        <groovy.version>3.0.25</groovy.version>
+        <groovy.version>5.0.3</groovy.version>
         <h2.version>2.2.224</h2.version>
         <jackson.version>2.15.2</jackson.version>
         <juel.version>2.2.7</juel.version>
@@ -77,10 +77,27 @@
         </dependency>
 
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy</artifactId>
             <version>${groovy.version}</version>
-            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy-json</artifactId>
+            <version>${groovy.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy-sql</artifactId>
+            <version>${groovy.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy-xml</artifactId>
+            <version>${groovy.version}</version>
         </dependency>
 
         <dependency>
