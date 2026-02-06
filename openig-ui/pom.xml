@@ -29,7 +29,7 @@
     <name>Wren:IG - User Interface</name>
 
     <properties>
-        <wrensec-ui.version>23.2.2</wrensec-ui.version>
+        <wrensec-ui.version>23.2.3</wrensec-ui.version>
     </properties>
 
     <dependencies>
