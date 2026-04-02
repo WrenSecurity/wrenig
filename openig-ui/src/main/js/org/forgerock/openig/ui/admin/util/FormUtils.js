@@ -88,10 +88,10 @@ define([
             persist: true,
             sortField: "text",
             options: predefinedOptions,
-            create (input) {
+            create (element) {
                 return {
-                    value: input,
-                    text: input
+                    value: element,
+                    text: element
                 };
             },
             onInitialize () {

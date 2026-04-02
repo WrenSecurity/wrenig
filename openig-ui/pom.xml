@@ -13,7 +13,7 @@
     information: "Portions copyright [year] [name of copyright owner]".
 
     Copyright 2014-2016 ForgeRock AS.
-    Portions Copyright 2023-2024 Wren Security.
+    Portions Copyright 2023-2026 Wren Security.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -29,7 +29,7 @@
     <name>Wren:IG - User Interface</name>
 
     <properties>
-        <wrensec-ui.version>23.2.3</wrensec-ui.version>
+        <wrensec-ui.version>23.2.5</wrensec-ui.version>
     </properties>
 
     <dependencies>
@@ -61,8 +61,8 @@
 
                 <configuration>
                     <installDirectory>${project.basedir}</installDirectory>
-                    <nodeVersion>v20.10.0</nodeVersion>
-                    <npmVersion>10.2.5</npmVersion>
+                    <nodeVersion>v24.14.1</nodeVersion>
+                    <npmVersion>11.9.0</npmVersion>
                     <nodeDownloadRoot>https://nodejs.org/dist/</nodeDownloadRoot>
                     <npmDownloadRoot>https://wrensecurity.jfrog.io/artifactory/api/npm/npm-virtual/npm/-/</npmDownloadRoot>
                 </configuration>

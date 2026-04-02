@@ -73,8 +73,8 @@ define([
             const promise = deferred.promise();
             const model = this.get(id);
             if (model) {
-                model.destroy().done((model) => {
-                    this.remove(model);
+                model.destroy().done((value) => {
+                    this.remove(value);
                     deferred.resolve();
                 }).fail((error) => {
                     console.log(error);
