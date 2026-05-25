@@ -1,0 +1,122 @@
+publiccodeYmlVersion: "0.5.0"
+
+name: Wren:IG
+applicationSuite: Wren Security
+url: "https://github.com/WrenSecurity/wrenig"
+landingURL: "https://wrensecurity.org/projects/wrenig/"
+logo: "https://wrensecurity.org/publiccode/wrenig-logo.svg"
+roadmap: "https://github.com/WrenSecurity/wrenig/issues"
+
+platforms:
+  - web
+
+categories:
+  - identity-management
+  - it-security
+
+organisation:
+  name: Orchitech s.r.o.
+  uri: "https://orchi.tech/"
+
+developmentStatus: stable
+
+softwareType: "standalone/web"
+
+description:
+  en:
+    localisedName: Wren:IG
+    shortDescription: >
+      Highly efficient identity gateway and reverse proxy enforcing authentication,
+      authorization, and SSO.
+
+    longDescription: >
+      Wren:IG is an open-source identity gateway from the Wren Security suite.
+      Deployed as a reverse proxy in front of existing applications and APIs,
+      Wren:IG intercepts HTTP traffic and enforces authentication and
+      authorization policies centrally — without requiring implementation in
+      the applications themselves.
+
+      **Core capabilities include:**
+
+      - **Reverse proxy and request routing** — transparent interception of
+        HTTP/HTTPS requests; routing rules direct traffic to one or more backend
+        services; sticky sessions and load balancing supported via configuration
+      - **Single Sign-On (SSO)** — propagates authenticated sessions from
+        Wren:AM (or any standards-compliant IdP) to downstream applications;
+        supports header injection, cookie forwarding, and password replay for
+        applications with no native SSO support
+      - **OAuth 2.0 and OpenID Connect** — acts as OAuth 2.0 client and resource
+        server; validates bearer tokens and ID tokens; performs token exchange
+        and introspection; obtains and caches tokens on behalf of users and
+        services
+      - **UMA 2.0 resource server** — acts as a Policy Enforcement Point for
+        User-Managed Access; validates Requesting Party Tokens (RPTs) and
+        required scopes; integrates with a UMA Authorization Server to protect
+        resources on behalf of resource owners
+      - **SAML 2.0 federation** — acts as a Service Provider in a SAML federation;
+        initiates and completes SP-initiated and IdP-initiated SSO flows;
+        translates SAML assertions into session cookies or HTTP headers for
+        downstream applications
+      - **Single Logout (SLO)** — participates in global logout flows across all
+        applications covered by the gateway; cleans up upstream and downstream
+        sessions consistently
+      - **Policy enforcement** — integrates with Wren:AM's policy decision point
+        to evaluate fine-grained access policies before forwarding requests;
+        blocks, redirects, or modifies requests based on policy outcomes
+      - **Request and response transformation** — a rich filter chain allows
+        adding, removing, or rewriting HTTP headers, query parameters, request
+        bodies, and responses; built-in filters for JWT signing, credential
+        injection, content-type negotiation, and rate limiting
+      - **Session management** — maintains gateway-managed sessions decoupled
+        from backend session state; configurable session storage in memory
+        or an external cache
+      - **Scripting and extensibility** — Groovy-based custom filters for
+        transformation, conditional routing, and integration with arbitrary
+        backend services; full access to the HTTP exchange object graph
+      - **API protection** — validates API keys, OAuth scopes, and JWT claims
+        before passing requests to microservices; throttling and quota enforcement
+        at the gateway layer
+
+      Wren:IG serves as a versatile policy enforcement layer across a
+      broad range of modern integration scenarios:
+
+      - bridging legacy applications into a modern identity architecture without
+        touching application code
+      - governing access to REST APIs and lightweight single-purpose services
+        with a consistent authorization layer
+      - securing MCP servers and AI tool endpoints with standards-based
+        authentication
+      - implementing Back-End for Front-End (BFF) and Token-Mediating Backend
+        (TMB) patterns for browser and mobile clients
+      - acting as a token exchange service that converts internally governed
+        personal access tokens into tokens accepted by external services
+
+    documentation: "https://docs.wrensecurity.org/wrenig/latest"
+
+    features:
+      - Reverse proxy intercepting HTTP traffic and enforcing authentication
+      - SSO propagation via header injection, cookie forwarding, and password replay
+      - OAuth 2.0 client and resource server with token validation and exchange
+      - SAML 2.0 Service Provider for SP-initiated and IdP-initiated SSO
+      - Policy enforcement integrated with Wren:AM authorization decisions
+      - Rich filter chain for HTTP request and response transformation
+      - API protection with scope validation, throttling, and quota enforcement
+      - Session management with flexible session storage options
+      - Extensible via Groovy scripting for custom filters and routing logic
+
+legal:
+  license: CDDL-1.0
+
+localisation: # Mandatory, but not applicable — product is not localized
+  localisationReady: false
+  availableLanguages:
+    - en
+
+maintenance:
+  type: "community"
+
+  contacts:
+    - name: Ondřej Urbánek
+      email: "ondrej.urbanek@orchitech.cz"
+      affiliation: Orchitech s.r.o.
+      phone: "+420 728 365 526"
