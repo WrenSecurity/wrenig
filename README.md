@@ -26,7 +26,11 @@
 # Wren:IG
 
 [![License](https://img.shields.io/badge/license-CDDL-blue.svg)](https://github.com/WrenSecurity/wrenig/blob/main/LICENSE)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://app.element.io/#/room/#WrenSecurity_Lobby:gitter.im)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/WrenSecurity/wrenig/badge)](https://scorecard.dev/viewer/?uri=github.com/WrenSecurity/wrenig)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13634/badge)](https://www.bestpractices.dev/projects/13634)
+[![OpenSSF Baseline](https://www.bestpractices.dev/projects/13634/baseline)](https://www.bestpractices.dev/projects/13634)
+[![CodeQL](https://github.com/WrenSecurity/wrenig/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/WrenSecurity/wrenig/actions/workflows/github-code-scanning/codeql)
+[![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=WrenSecurity_wrenig&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=WrenSecurity_wrenig)
 
 Wren:IG is a community‐developed reverse proxy server providing single sign-on (SSO) to any application behind the proxy.
 
