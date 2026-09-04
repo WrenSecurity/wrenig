@@ -29,7 +29,7 @@
     <name>Wren:IG - User Interface</name>
 
     <properties>
-        <wrensec-ui.version>23.2.5</wrensec-ui.version>
+        <wrensec-ui.version>23.4.0</wrensec-ui.version>
     </properties>
 
     <dependencies>
@@ -61,8 +61,8 @@
 
                 <configuration>
                     <installDirectory>${project.basedir}</installDirectory>
-                    <nodeVersion>v24.14.1</nodeVersion>
-                    <npmVersion>11.9.0</npmVersion>
+                    <nodeVersion>v24.20.0</nodeVersion>
+                    <npmVersion>11.19.0</npmVersion>
                     <nodeDownloadRoot>https://nodejs.org/dist/</nodeDownloadRoot>
                     <npmDownloadRoot>https://wrensecurity.jfrog.io/artifactory/api/npm/npm-virtual/npm/-/</npmDownloadRoot>
                 </configuration>
