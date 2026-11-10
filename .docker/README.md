@@ -32,7 +32,18 @@ You can run Wren:IG through this command:
 
     docker run --rm --name wrenig-test -p 8080:8080 wrensecurity/wrenig:latest
 
+By default, Wren:IG runs in `PRODUCTION` mode: the administration API is restricted to loopback connections and Wren:IG Studio is disabled.
+
+To try out Wren:IG Studio, you can explicitly enable `EVALUATION` mode by providing your own `admin.json`:
+
+    mkdir -p wrenig/config
+    echo '{ "prefix": "wrenig", "mode": "EVALUATION" }' > wrenig/config/admin.json
+    docker run --rm --name wrenig-test -p 8080:8080 -v "$PWD/wrenig:/srv/wrenig" wrensecurity/wrenig:latest
+
 Then you can hit http://localhost:8080/wrenig/studio in your browser.
+
+**Warning:** In `EVALUATION` mode, all administration endpoints (including the routes management API) are open and unauthenticated.
+Never use this mode in a production environment or expose it to untrusted networks.
 
 # Acknowledgments
 
