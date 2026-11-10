@@ -12,6 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
+ * Portions Copyright 2026 Wren Security.
  */
 
 define([
@@ -124,7 +125,9 @@ define([
             }
         );
 
-        const msgNode = $(`<div><pre id="jsonExportContent" class="hidden-pre">${jsonContent}</pre></div>`);
+        const msgNode = $("<div>").append(
+            $("<pre>", { id: "jsonExportContent", "class": "hidden-pre" }).text(jsonContent)
+        );
         CodeMirror(msgNode[0], {
             value: jsonContent,
             autofocus: true,
