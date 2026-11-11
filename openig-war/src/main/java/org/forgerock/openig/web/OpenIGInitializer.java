@@ -12,7 +12,7 @@
  * information: "Portions copyright [year] [name of copyright owner]".
  *
  * Copyright 2016 ForgeRock AS.
- * Portions Copyright 2025 Wren Security.
+ * Portions Copyright 2025-2026 Wren Security.
  */
 
 package org.forgerock.openig.web;
@@ -87,7 +87,7 @@ public class OpenIGInitializer implements ServletContainerInitializer {
             // Read OpenIG mode (will trigger exceptions if unknown values are used)
             RunMode mode = adminConfig.get("mode")
                                       .as(evaluated())
-                                      .defaultTo(EVALUATION.name())
+                                      .defaultTo(PRODUCTION.name())
                                       .as(enumConstant(RunMode.class));
 
             String adminPrefix = adminConfig.get("prefix").defaultTo("openig").asString();
@@ -96,8 +96,9 @@ public class OpenIGInitializer implements ServletContainerInitializer {
             AdminHttpApplication admin;
             if (EVALUATION.equals(mode)) {
                 logger.warn("The product is running in {} mode - by default, all endpoints are open and accessible. "
-                            + "Do not use this mode for a production environment. To prevent this message, add the "
-                            + "top-level attribute '\"mode\": \"{}\"' to '${openig.base}/config/admin.json.'",
+                            + "Do not use this mode for a production environment. To prevent this message, remove "
+                            + "the top-level attribute 'mode' from '${openig.base}/config/admin.json' or set it "
+                            + "to '{}'.",
                             EVALUATION.name(),
                             PRODUCTION.name());
                 admin = new UiAdminHttpApplication(adminPrefix, adminConfig, environment, mode);
